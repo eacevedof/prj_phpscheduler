@@ -28,14 +28,14 @@ class ComponentScheduler
     
     public function __construct() 
     {
-        $this->arMonth = ["y"=>"","m"=>""];
+        $this->arMonth = ["y"=>"","m"=>"","name"=>""];
         $this->arConfig = ["pathroot"=>$_SERVER["DOCUMENT_ROOT"]];
         $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];
         $this->arEmployees = ["rosana"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"];
         $this->arHours = ["1000"=>"10:00","1130"=>"11:30","1230"=>"12:30","1330"=>"13:30","free"=>"Libre"];
         
         $this->json_load();
-        pr($this->arJson["data"]);
+        //pr($this->arJson["data"]);
     }
     
     private function json_load()
@@ -48,9 +48,11 @@ class ComponentScheduler
     {
         $sPath = $this->arJson["path"];
         $arTmp = $this->arJson["data"];
+        
+        //bug($arTmp);bug($arPiece);
         if($isAdd)
-            $arTmp = array_merge($arTmp,$arPiece);
-      
+            $arTmp = $arTmp+$arPiece;
+        
         $this->arJson["data"] = $arTmp;
         $sJson = json_encode($arTmp);
         file_put_contents($sPath,$sJson);
@@ -142,26 +144,22 @@ class ComponentScheduler
         {
             $arPiece[$sYear.$sMonth] = [];
             $this->json_write($arPiece);
+            $this->json_load();
         }
         return $sHtml;
     }
     
+    
     private function get_tdform($iDate)
     {
-        
-        
-    }
 
-
-    private function get_td($iDate)
-    {
-        $arDate = $this->get_ardate($iDate);
-        $sDate = date("l",mktime(0,0,0,$arDate["m"],$arDate["d"],$arDate["y"]));
+        $oForm = new HelperForm();
+        $oForm->set_id("frmDay[$iDate]");
+        $sHtml = "";
+        $sHtml .= $oForm->get_opentag();
         
-        $sHtml = "<b>$sDate {$arDate["d"]}</b><br/>";
-        $sHtml .= "<table>";
-        $sHtml .= "<tr>";
-        
+        $oButton = new HelperButtonBasic("but$iDate");
+        $oButton->set_innerhtml("Save ");
         foreach($this->arEmployees as $k=>$sEmpl)
         {
             $id = "$iDate"."_$k";
@@ -173,13 +171,28 @@ class ComponentScheduler
             $sHtml .= "<td>$sEmpl {$oHid->get_html()}</td><td>{$oSelHour->get_html()}</td>";
         }
         
+        $sHtml .= "</form>";
+        return $sHtml;
+    }
+
+
+    private function get_td($iDate)
+    {
+        $arDate = $this->get_ardate($iDate);
+        $sDay = date("l",mktime(0,0,0,$this->arMonth["m"],$arDate["d"], $this->arMonth["y"]));        
+        $sHtml = "<b>{$sDay} {$arDate["d"]}</b><br/>";
+        $sHtml .= "<table>";
+        $sHtml .= "<tr>";
+        $sHtml .= "<td>";
+        $sHtml .= $this->get_tdform($iDate);
+        $sHtml .= "</td>";
         $sHtml .= "</tr></table>";
         return $sHtml;
     }
     
     public function run($isPrintL=1)
     {
-        bugp();
+        //bugp();
         $iColRows = 2;
         
         $oButton = new HelperButtonBasic("butSend");
@@ -189,9 +202,8 @@ class ComponentScheduler
         $sDatePicker = $this->get_datepick();
         $sHtml = "<table>";
         $sHtml .= "<tr>$sDatePicker</tr>";
-        $sMonth = date("F",mktime(0,0,0,date("m"),10));
-        
-        $sHtml .= "<tr><th>$sMonth</th><th>{$oButton->get_html()}</th></tr>";
+        $this->arMonth["name"] = date("F",mktime(0,0,0,$this->arMonth["m"],10));
+        $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th>{$oButton->get_html()}</th></tr>";
         $iCol = 0;
         for($i=$this->iStart; $i<=$this->iEnd; $i++)
         {
@@ -209,10 +221,9 @@ class ComponentScheduler
                 $sHtml .= "</tr>";
             $iCol++;
         }
-        $sHtml .= "<tr><td>$sMonth</td><td>{$oButton->get_html()}</td></tr>";
+        $sHtml .= "<tr><td>{$this->arMonth["name"]}</td><td>{$oButton->get_html()}</td></tr>";
         $sHtml .= "</table>";
         s($sHtml);
-
     }//run()
     
     public function set_path_file($value){$this->sFilePath=$value;}
