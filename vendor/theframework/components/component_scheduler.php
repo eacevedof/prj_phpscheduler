@@ -10,10 +10,11 @@
  */
 namespace TheFramework\Components;
 
-use TheFramework\Helpers\HelperLabel;
+//use TheFramework\Helpers\HelperLabel;
+use TheFramework\Helpers\HelperInputHidden;
 use TheFramework\Helpers\HelperForm;
 use TheFramework\Helpers\HelperSelect;
-
+use TheFramework\Helpers\HelperButtonBasic;
 
 class ComponentScheduler 
 {
@@ -58,36 +59,46 @@ class ComponentScheduler
     
     private function get_td($iDate)
     {
-        $sHtml = "";
         $arDate = $this->get_ardate($iDate);
         $sDate = date("l",mktime(0,0,0,$arDate["m"],$arDate["d"],$arDate["y"]));
         
-        $oLabel = new HelperLabel("sel$iDate");
-        $oSelEmpl = new HelperSelect($this->arEmployees,"selEmpl$iDate","selEmpl$iDate",$oLabel);
-        $oSelEmpl->set_multiple_size(3);
-        $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour$iDate",$oLabel);
+        $sHtml = "<b>$sDate {$arDate["d"]}</b><br/>";
+        $sHtml .= "<table>";
+        $sHtml .= "<tr>";
         
-        $sHtml .= "$sDate {$arDate["d"]}<br/>";
-        $sHtml .= $oSelEmpl->get_html();
-        $sHtml .= "<br/>";
-        $sHtml .= $oSelHour->get_html();
+        foreach($this->arEmployees as $k=>$sEmpl)
+        {
+            $id = "$iDate"."_$k";
+            $oHid = new HelperInputHidden();
+            $oHid->set_id("hid$id");
+            $oHid->set_name("hid$id");
+            $oHid->set_value("employee:$k");
+            $oSelHour = new HelperSelect($this->arHours,"selHour$id","selHour$id");
+            $sHtml .= "<td>$sEmpl {$oHid->get_html()}</td><td>{$oSelHour->get_html()}</td>";
+        }
         
-        
+        $sHtml .= "</tr></table>";
         return $sHtml;
     }
     
     public function run($isPrintL=1)
     {
-        
+        bugp();
+        $iColRows = 2;
         $oForm = new HelperForm();
         $oForm->show_opentag();
+        
+        $oButton = new HelperButtonBasic("butSend");
+        $oButton->set_innerhtml("save");
+        $oButton->set_type("submit");
+        
         $sHtml = "<table>";
         $sMonth = date("F",mktime(0,0,0,date("m"),10)); // March
-        $sHtml .= "<tr><th>$sMonth</th></tr>";
+        $sHtml .= "<tr><th>$sMonth</th><th>{$oButton->get_html()}</th></tr>";
         $iCol = 0;
-        for($i=$this->iStart;$i<=$this->iEnd;$i++)
+        for($i=$this->iStart; $i<=$this->iEnd; $i++)
         {
-            $isStartCol = ($iCol%4)==0;
+            $isStartCol = ($iCol%$iColRows)==0;
             if($isStartCol)
                 $sHtml .= "<tr>";
             $sHtmlTD = $this->get_td($i);
@@ -96,11 +107,12 @@ class ComponentScheduler
             $sHtml .= $sHtmlTD;
             $sHtml .= "</td>";
             
-            $isEndCol = ($iCol%4)==3;
+            $isEndCol = ($iCol%$iColRows)==($iColRows-1);
             if($isEndCol)
                 $sHtml .= "</tr>";
             $iCol++;
         }
+        $sHtml .= "<tr><td>$sMonth</td><td>{$oButton->get_html()}</td></tr>";
         $sHtml .= "</table>";
         s($sHtml);
         $oForm->show_closetag();
