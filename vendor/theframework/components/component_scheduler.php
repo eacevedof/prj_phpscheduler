@@ -18,20 +18,45 @@ use TheFramework\Helpers\HelperButtonBasic;
 
 class ComponentScheduler 
 {
+    private $arMonth;
     private $iStart;
     private $iEnd;
     private $arEmployees;
     private $arHours;
-    private $arDays;
-   
+    private $arConfig;
+    private $arJson;
+    
     public function __construct() 
     {
-        $this->iStart = date("Ym01");
-        $this->iEnd = date("Ymt");
-        $this->arDays = [];
+        $this->arMonth = ["y"=>"","m"=>""];
+        $this->arConfig = ["pathroot"=>$_SERVER["DOCUMENT_ROOT"]];
+        $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];
         $this->arEmployees = ["rosana"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"];
-        $this->arHours = ["1000"=>"10:00","1130"=>"11:30","1230"=>"12;30","free"=>"Libre"];
+        $this->arHours = ["1000"=>"10:00","1130"=>"11:30","1230"=>"12:30","1330"=>"13:30","free"=>"Libre"];
+        
+        $this->json_load();
+        pr($this->arJson["data"]);
     }
+    
+    private function json_load()
+    {
+        $this->arJson["data"] = $this->json_read();
+    }
+    
+    
+    private function json_write()
+    {
+        
+    }
+    
+    private function json_read()
+    {
+        $sPath = $this->arJson["path"];
+        $sContent = file_get_contents($sPath);
+        $arJson = json_decode($sContent,TRUE);
+        return $arJson;
+    }
+    
     
     private function in_string($arChars=[],$sString)
     {
@@ -57,6 +82,55 @@ class ComponentScheduler
         return $arDate;
     }
     
+    private function get_post($sKey=NULL)
+    {
+        if($sKey)
+        {
+            if(isset($_POST[$sKey])) return $_POST[$sKey];
+        }
+        return NULL;
+    }
+    
+    private function get_datepick()
+    {
+        $sMonth = date("m");
+        $sYear = date("Y");
+        
+        if($this->get_post("selYear")) $sYear = $this->get_post("selYear");
+        if($this->get_post("selMonth")) $sMonth = $this->get_post("selMonth");
+        
+        $this->iStart = date($sYear.$sMonth."01");
+        $this->iEnd = date($sYear.$sMonth."t");
+        $this->arMonth["m"] = $sMonth;
+        $this->arMonth["y"] = $sYear;
+        
+        $arOptions = [""=>"...year",date("Y")=>date("Y"),date("Y")+1=>date("Y")+1];
+        $oSelYear = new HelperSelect($arOptions,"selYear","selYear");
+        $oSelYear->set_value_to_select($sYear);
+        
+        $arOptions = [""=>"...month",date("m")=>date("m"),date("m")+1=>date("m")+1];
+        $oSelMonth = new HelperSelect($arOptions,"selMonth","selMonth");
+        $oSelMonth->set_value_to_select($sMonth);
+        
+        $oButton = new HelperButtonBasic("butMonth");
+        $oButton->set_innerhtml("Save month");
+        $oButton->set_type("submit");
+        
+        $sHtml = "<td>"
+        . "<form method=\"post\" name=\"frmMonth\">"
+        . "{$oSelMonth->get_html()} - {$oSelYear->get_html()} <br/>{$oButton->get_html()}"
+        . "</form>"
+        . "</td><td></td>";
+        
+        return $sHtml;
+    }
+    
+    private function get_tdform($iDate)
+    {
+        
+    }
+
+
     private function get_td($iDate)
     {
         $arDate = $this->get_ardate($iDate);
@@ -85,15 +159,16 @@ class ComponentScheduler
     {
         bugp();
         $iColRows = 2;
-        $oForm = new HelperForm();
-        $oForm->show_opentag();
         
         $oButton = new HelperButtonBasic("butSend");
         $oButton->set_innerhtml("save");
         $oButton->set_type("submit");
         
+        $sDatePicker = $this->get_datepick();
         $sHtml = "<table>";
-        $sMonth = date("F",mktime(0,0,0,date("m"),10)); // March
+        $sHtml .= "<tr>$sDatePicker</tr>";
+        $sMonth = date("F",mktime(0,0,0,date("m"),10));
+        
         $sHtml .= "<tr><th>$sMonth</th><th>{$oButton->get_html()}</th></tr>";
         $iCol = 0;
         for($i=$this->iStart; $i<=$this->iEnd; $i++)
@@ -115,7 +190,7 @@ class ComponentScheduler
         $sHtml .= "<tr><td>$sMonth</td><td>{$oButton->get_html()}</td></tr>";
         $sHtml .= "</table>";
         s($sHtml);
-        $oForm->show_closetag();
+
     }//run()
     
     public function set_path_file($value){$this->sFilePath=$value;}
