@@ -108,8 +108,13 @@ class ComponentScheduler
         if($this->get_post("selYear")) $sYear = $this->get_post("selYear");
         if($this->get_post("selMonth")) $sMonth = $this->get_post("selMonth");
         
-        $this->iStart = date($sYear.$sMonth."01");
-        $this->iEnd = date($sYear.$sMonth."t");
+        $this->iStart = $sYear.$sMonth."01";
+        $this->iStart = (int) $this->iStart;
+        $this->iEnd = date("Ymt",strtotime($this->iStart));
+        $this->iEnd = (int) $this->iEnd;
+        //$this->iEnd = $this->get_ardate($this->iEnd);
+        //$this->iEnd = $this->iEnd["d"];
+        pr($this->iEnd);
         $this->arMonth["m"] = $sMonth;
         $this->arMonth["y"] = $sYear;
         
@@ -118,12 +123,15 @@ class ComponentScheduler
         $oSelYear->set_value_to_select($this->arMonth["y"]);
         
         $arOptions = [""=>"...month",$sMonth=>$sMonth];
-        for($i=(int)$sMonth; $i<13; $i++)
+        $sMonth = (int)date("m");
+        //pr($sMonth);die;
+        for($i=$sMonth; $i<13; $i++)
         {
             $sOpt = sprintf("%02d",$i);
             $arOptions[$sOpt] = $sOpt;
         }
         
+        asort($arOptions);
         $oSelMonth = new HelperSelect($arOptions,"selMonth","selMonth");
         $oSelMonth->set_value_to_select($this->arMonth["m"]);
         
@@ -205,6 +213,7 @@ class ComponentScheduler
         $this->arMonth["name"] = date("F",mktime(0,0,0,$this->arMonth["m"],10));
         $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th>{$oButton->get_html()}</th></tr>";
         $iCol = 0;
+        
         for($i=$this->iStart; $i<=$this->iEnd; $i++)
         {
             $isStartCol = ($iCol%$iColRows)==0;
