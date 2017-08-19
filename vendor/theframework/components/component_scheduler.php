@@ -63,17 +63,21 @@ class ComponentScheduler
         $oSelEmpl = new HelperSelect($this->arEmployees);
         $oSelHour = new HelperSelect($this->arHours);
         
+        $oForm = new HelperForm();
+        $oForm->show_opentag();
         $sHtml = "<table>";
         $iCol = 0;
         for($i=$this->iStart;$i<=$this->iEnd;$i++)
         {
-            
             $isStartCol = ($iCol%4)==0;
             if($isStartCol)
                 $sHtml .= "<tr>";
             $arDate = $this->get_ardate($i);
+
             $sDate = date("l",mktime(0,0,0,$arDate["m"],$arDate["d"],$arDate["y"]));
-            $sHtml .= "<td>$sDate</td>";
+            $sHtml .= "<td>";
+            $sHtml .= "$sDate {$arDate["d"]}";            
+            $sHtml .= "</td>";
             
             $isEndCol = ($iCol%4)==3;
             if($isEndCol)
@@ -82,10 +86,7 @@ class ComponentScheduler
         }
         $sHtml .= "</table>";
         s($sHtml);
-        $oForm = new HelperForm();
-        $oForm->add_control($oSelEmpl);
-        $oForm->add_control($oSelHour);
-        $oForm->show();
+        $oForm->show_closetag();
     }//run()
     
     public function set_path_file($value){$this->sFilePath=$value;}
