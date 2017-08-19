@@ -44,9 +44,16 @@ class ComponentScheduler
     }
     
     
-    private function json_write()
+    private function json_write($arPiece,$isAdd=1)
     {
-        
+        $sPath = $this->arJson["path"];
+        $arTmp = $this->arJson["data"];
+        if($isAdd)
+            $arTmp = array_merge($arTmp,$arPiece);
+      
+        $this->arJson["data"] = $arTmp;
+        $sJson = json_encode($arTmp);
+        file_put_contents($sPath,$sJson);
     }
     
     private function json_read()
@@ -104,29 +111,44 @@ class ComponentScheduler
         $this->arMonth["m"] = $sMonth;
         $this->arMonth["y"] = $sYear;
         
-        $arOptions = [""=>"...year",date("Y")=>date("Y"),date("Y")+1=>date("Y")+1];
+        $arOptions = [""=>"...year",$sYear=>$sYear,$sYear+1=>$sYear+1];
         $oSelYear = new HelperSelect($arOptions,"selYear","selYear");
-        $oSelYear->set_value_to_select($sYear);
+        $oSelYear->set_value_to_select($this->arMonth["y"]);
         
-        $arOptions = [""=>"...month",date("m")=>date("m"),date("m")+1=>date("m")+1];
+        $arOptions = [""=>"...month",$sMonth=>$sMonth];
+        for($i=(int)$sMonth; $i<13; $i++)
+        {
+            $sOpt = sprintf("%02d",$i);
+            $arOptions[$sOpt] = $sOpt;
+        }
+        
         $oSelMonth = new HelperSelect($arOptions,"selMonth","selMonth");
-        $oSelMonth->set_value_to_select($sMonth);
+        $oSelMonth->set_value_to_select($this->arMonth["m"]);
         
         $oButton = new HelperButtonBasic("butMonth");
         $oButton->set_innerhtml("Save month");
         $oButton->set_type("submit");
+        
+        $oHidden = new HelperInputHidden("hidAction");
+        $oHidden->set_value("seldate");
         
         $sHtml = "<td>"
         . "<form method=\"post\" name=\"frmMonth\">"
         . "{$oSelMonth->get_html()} - {$oSelYear->get_html()} <br/>{$oButton->get_html()}"
         . "</form>"
         . "</td><td></td>";
-        
+      
+        if(!isset($this->arJson["data"][$sYear.$sMonth])) 
+        {
+            $arPiece[$sYear.$sMonth] = [];
+            $this->json_write($arPiece);
+        }
         return $sHtml;
     }
     
     private function get_tdform($iDate)
     {
+        
         
     }
 
