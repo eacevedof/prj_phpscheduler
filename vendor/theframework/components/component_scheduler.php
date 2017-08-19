@@ -10,6 +10,7 @@
  */
 namespace TheFramework\Components;
 
+use TheFramework\Helpers\HelperLabel;
 use TheFramework\Helpers\HelperForm;
 use TheFramework\Helpers\HelperSelect;
 
@@ -24,12 +25,9 @@ class ComponentScheduler
    
     public function __construct() 
     {
-        $this->iStart = date("m-01-Y");
         $this->iStart = date("Ym01");
         $this->iEnd = date("Ymt");
         $this->arDays = [];
-        pr("istart: $this->iStart,iend:$this->iEnd");
-        //bug("ComponentScheduler 1");
         $this->arEmployees = ["rosana"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"];
         $this->arHours = ["1000"=>"10:00","1130"=>"11:30","1230"=>"12;30","free"=>"Libre"];
     }
@@ -58,25 +56,44 @@ class ComponentScheduler
         return $arDate;
     }
     
+    private function get_td($iDate)
+    {
+        $sHtml = "";
+        $arDate = $this->get_ardate($iDate);
+        $sDate = date("l",mktime(0,0,0,$arDate["m"],$arDate["d"],$arDate["y"]));
+        
+        $oLabel = new HelperLabel("sel$iDate");
+        $oSelEmpl = new HelperSelect($this->arEmployees,"selEmpl$iDate","selEmpl$iDate",$oLabel);
+        $oSelEmpl->set_multiple_size(3);
+        $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour$iDate",$oLabel);
+        
+        $sHtml .= "$sDate {$arDate["d"]}<br/>";
+        $sHtml .= $oSelEmpl->get_html();
+        $sHtml .= "<br/>";
+        $sHtml .= $oSelHour->get_html();
+        
+        
+        return $sHtml;
+    }
+    
     public function run($isPrintL=1)
     {
-        $oSelEmpl = new HelperSelect($this->arEmployees);
-        $oSelHour = new HelperSelect($this->arHours);
         
         $oForm = new HelperForm();
         $oForm->show_opentag();
         $sHtml = "<table>";
+        $sMonth = date("F",mktime(0,0,0,date("m"),10)); // March
+        $sHtml .= "<tr><th>$sMonth</th></tr>";
         $iCol = 0;
         for($i=$this->iStart;$i<=$this->iEnd;$i++)
         {
             $isStartCol = ($iCol%4)==0;
             if($isStartCol)
                 $sHtml .= "<tr>";
-            $arDate = $this->get_ardate($i);
-
-            $sDate = date("l",mktime(0,0,0,$arDate["m"],$arDate["d"],$arDate["y"]));
+            $sHtmlTD = $this->get_td($i);
+            
             $sHtml .= "<td>";
-            $sHtml .= "$sDate {$arDate["d"]}";            
+            $sHtml .= $sHtmlTD;
             $sHtml .= "</td>";
             
             $isEndCol = ($iCol%4)==3;
