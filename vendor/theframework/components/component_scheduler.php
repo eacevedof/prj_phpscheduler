@@ -108,6 +108,12 @@ class ComponentScheduler
         if($this->get_post("selYear")) $sYear = $this->get_post("selYear");
         if($this->get_post("selMonth")) $sMonth = $this->get_post("selMonth");
         
+        if($this->get_post("hidDay") && !$this->get_post("selMonth"))
+        {
+            $arDay = $this->get_ardate($this->get_post("hidDay"));
+            $sYear = $arDay["y"]; $sMonth = $arDay["m"];
+        }
+        
         $this->iStart = $sYear.$sMonth."01";
         $this->iStart = (int) $this->iStart;
         $this->iEnd = date("Ymt",strtotime($this->iStart));
@@ -160,25 +166,31 @@ class ComponentScheduler
     
     private function get_tdform($iDate)
     {
-
+        $arDate = $this->get_ardate($iDate);
+        
         $oForm = new HelperForm();
         $oForm->set_id("frmDay[$iDate]");
         $sHtml = "";
         $sHtml .= $oForm->get_opentag();
         
         $oButton = new HelperButtonBasic("but$iDate");
-        $oButton->set_innerhtml("Save ");
+        $oButton->set_type("submit");
+        $oButton->set_innerhtml("Save day");
+        
+        $oHid = new HelperInputHidden();
+        $oHid->set_id("hidDay$iDate");
+        $oHid->set_name("hidDay");
+        $oHid->set_value($iDate);
+        
+        $sHtml .= $oHid->get_html();
+            
         foreach($this->arEmployees as $k=>$sEmpl)
         {
-            $id = "$iDate"."_$k";
-            $oHid = new HelperInputHidden();
-            $oHid->set_id("hid$id");
-            $oHid->set_name("hid$id");
-            $oHid->set_value("employee:$k");
-            $oSelHour = new HelperSelect($this->arHours,"selHour$id","selHour$id");
-            $sHtml .= "<td>$sEmpl {$oHid->get_html()}</td><td>{$oSelHour->get_html()}</td>";
+            $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour[$sEmpl]");
+            $sHtml .= "<td>$sEmpl</td><td>{$oSelHour->get_html()}</td>";
         }
         
+        $sHtml .= $oButton->get_html();
         $sHtml .= "</form>";
         return $sHtml;
     }
@@ -200,18 +212,14 @@ class ComponentScheduler
     
     public function run($isPrintL=1)
     {
-        //bugp();
+        bugp();
         $iColRows = 2;
-        
-        $oButton = new HelperButtonBasic("butSend");
-        $oButton->set_innerhtml("save");
-        $oButton->set_type("submit");
         
         $sDatePicker = $this->get_datepick();
         $sHtml = "<table>";
         $sHtml .= "<tr>$sDatePicker</tr>";
         $this->arMonth["name"] = date("F",mktime(0,0,0,$this->arMonth["m"],10));
-        $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th>{$oButton->get_html()}</th></tr>";
+        $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th></th></tr>";
         $iCol = 0;
         
         for($i=$this->iStart; $i<=$this->iEnd; $i++)
@@ -230,7 +238,7 @@ class ComponentScheduler
                 $sHtml .= "</tr>";
             $iCol++;
         }
-        $sHtml .= "<tr><td>{$this->arMonth["name"]}</td><td>{$oButton->get_html()}</td></tr>";
+        //$sHtml .= "<tr><td>{$this->arMonth["name"]}</td><td>{$oButton->get_html()}</td></tr>";
         $sHtml .= "</table>";
         s($sHtml);
     }//run()
