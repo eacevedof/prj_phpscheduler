@@ -43,16 +43,60 @@ class ComponentScheduler
         $this->arJson["data"] = $this->json_read();
     }
     
+    private function get_formatted_post()
+    {
+        $arFormatted = NULL;
+        if($this->get_post("hidDay"))
+        {
+            $arDay = $this->get_post("hidDay");
+            $arDay = $this->get_ardate($arDay);
+            $sMonth = (string)$arDay["y"].$arDay["m"];
+            $sDay = sprintf("%02d",$arDay["d"]);
+
+            $arHours = $this->get_post("selHour");
+            //pr($arHours);
+            //pr($this->arHours);
+            $arDay = [];
+            foreach($this->arHours as $sKh=>$sVh)
+            {
+                foreach($arHours as $sEmp=>$sHour)
+                    if($sKh==$sHour)
+                        $arDay[$sHour][] = $sEmp;
+            }
+            
+            $arFormatted[$sMonth][$sDay] = $arDay;
+            //pr($arFormatted);die;
+        }//if(post(hidday)
+        return $arFormatted;
+    }//get_formatted_post
+    
+    private function ar_merge(&$arMain,$arPiece)
+    {
+        $sYear = array_keys($arPiece);
+        $sYear = (isset($sYear[0])?$sYear[0]:NULL);
+        if($sYear)
+        {
+            if(!isset($arMain[$sYear]))
+                $arMain[$sYear] = $arPiece[$sYear];
+            else 
+            {
+                $sMonth = array_keys($arPiece[$sYear]);
+                $sMonth = (isset($sMonth[0])?$sMonth[0]:NULL);
+                if($sMonth)
+                    $arMain[$sYear][$sMonth] = $arPiece[$sYear][$sMonth];
+            }
+        }
+    }//ar_merge
     
     private function json_write($arPiece,$isAdd=1)
     {
         $sPath = $this->arJson["path"];
         $arTmp = $this->arJson["data"];
         
-        //bug($arTmp);bug($arPiece);
+        bug($arTmp,"arTmp");bug($arPiece,"arPiece");
         if($isAdd)
-            $arTmp = $arTmp+$arPiece;
-        
+            $this->ar_merge($arTmp,$arPiece);
+        bug($arTmp,"arTmp2");
         $this->arJson["data"] = $arTmp;
         $sJson = json_encode($arTmp);
         file_put_contents($sPath,$sJson);
@@ -65,8 +109,7 @@ class ComponentScheduler
         $arJson = json_decode($sContent,TRUE);
         return $arJson;
     }
-    
-    
+        
     private function in_string($arChars=[],$sString)
     {
         foreach($arChars as $c)
@@ -120,9 +163,9 @@ class ComponentScheduler
         $this->iEnd = (int) $this->iEnd;
         //$this->iEnd = $this->get_ardate($this->iEnd);
         //$this->iEnd = $this->iEnd["d"];
-        pr($this->iEnd);
-        $this->arMonth["m"] = $sMonth;
+        //pr($this->iEnd);
         $this->arMonth["y"] = $sYear;
+        $this->arMonth["m"] = $sMonth;
         
         $arOptions = [""=>"...year",$sYear=>$sYear,$sYear+1=>$sYear+1];
         $oSelYear = new HelperSelect($arOptions,"selYear","selYear");
@@ -154,15 +197,14 @@ class ComponentScheduler
         . "</form>"
         . "</td><td></td>";
       
-        if(!isset($this->arJson["data"][$sYear.$sMonth])) 
+        if(!isset($this->arJson["data"][$this->arMonth["y"].$this->arMonth["m"]])) 
         {
-            $arPiece[$sYear.$sMonth] = [];
+            $arPiece[$this->arMonth["y"].$this->arMonth["m"]] = [];
             $this->json_write($arPiece);
             $this->json_load();
         }
         return $sHtml;
-    }
-    
+    }//get_datepick
     
     private function get_tdform($iDate)
     {
@@ -193,9 +235,19 @@ class ComponentScheduler
         $sHtml .= $oButton->get_html();
         $sHtml .= "</form>";
         return $sHtml;
+    }//get_tdform
+
+    private function json_save()
+    {
+        $arPiece = $this->get_formatted_post();
+        if($arPiece !== NULL)
+        {
+            //pr($arPiece);die;
+            $this->json_write($arPiece);
+            $this->json_load();
+        }
     }
-
-
+    
     private function get_td($iDate)
     {
         $arDate = $this->get_ardate($iDate);
@@ -213,6 +265,9 @@ class ComponentScheduler
     public function run($isPrintL=1)
     {
         bugp();
+        //comprueba post para ver si hay algo q guardar. Lo guarda y recarga
+        $this->json_save();
+        //bug($this->arJson);
         $iColRows = 2;
         
         $sDatePicker = $this->get_datepick();
