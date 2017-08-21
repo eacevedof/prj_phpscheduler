@@ -31,8 +31,8 @@ class ComponentScheduler
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
         $this->arConfig = ["pathroot"=>$_SERVER["DOCUMENT_ROOT"]];
         $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];
-        $this->arEmployees = ["rosana"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"];
-        $this->arHours = [""=>"","1000"=>"10:00","1130"=>"11:30","1230"=>"12:30","1330"=>"13:30","free"=>"Libre"];
+        $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"];
+        $this->arHours = [""=>"...hour","1000"=>"10:00","1130"=>"11:30","1230"=>"12:30","1330"=>"13:30","free"=>"Libre"];
         
         $this->json_load();
         //pr($this->arJson["data"]);
@@ -237,11 +237,11 @@ class ComponentScheduler
         
         $sHtml .= $oHid->get_html();
             
-        foreach($this->arEmployees as $k=>$sEmpl)
+        foreach($this->arEmployees as $kEmpl=>$sEmpl)
         {
-            $sHour = $this->get_hour($arDate["y"],$arDate["m"],$arDate["d"],$sEmpl);
+            $sHour = $this->get_hour($arDate["y"],$arDate["m"],$arDate["d"],$kEmpl);
             //pr($sHour,"hour");
-            $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour[$sEmpl]");
+            $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour[$kEmpl]");
             $oSelHour->set_value_to_select($sHour);
             $sHtml .= "<td>$sEmpl</td><td>{$oSelHour->get_html()}</td>";
         }
