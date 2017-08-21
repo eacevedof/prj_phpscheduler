@@ -10,6 +10,7 @@
  */
 namespace TheFramework\Components;
 
+use TheFramework\Components\ComponentTopdf;
 //use TheFramework\Helpers\HelperLabel;
 use TheFramework\Helpers\HelperInputHidden;
 use TheFramework\Helpers\HelperForm;
@@ -325,5 +326,9 @@ class ComponentScheduler
     public function set_regex($value){$this->sRegexp=$value;}
     
     public function get_extracted(){return $this->arLines;}
-    
+
+    public function pdf()
+    {
+        
+    }
 }//ComponentScheduler
