@@ -182,18 +182,26 @@ class ComponentScheduler
         $oSelMonth = new HelperSelect($arOptions,"selMonth","selMonth");
         $oSelMonth->set_value_to_select($this->arMonth["m"]);
         
-        $oButton = new HelperButtonBasic("butMonth");
-        $oButton->set_innerhtml("Go month...");
-        $oButton->set_type("submit");
+        $oButGo = new HelperButtonBasic("butMonth");
+        $oButGo->set_innerhtml("Go month...");
+        $oButGo->set_type("submit");
         
-        $oHidden = new HelperInputHidden("hidAction");
-        $oHidden->set_value("seldate");
+        $oButPdf = clone($oButGo);
+        $oButPdf->set_innerhtml("PDF");
+        
+        $oHidPdf = new HelperInputHidden("hidPdf");
+        $oHidPdf->set_value($this->arMonth["y"].$this->arMonth["m"]);
         
         $sHtml = "<td>"
         . "<form method=\"post\" name=\"frmMonth\">"
-        . "{$oSelMonth->get_html()} - {$oSelYear->get_html()} <br/>{$oButton->get_html()}"
+        . "{$oSelMonth->get_html()} - {$oSelYear->get_html()} <br/>{$oButGo->get_html()}"
         . "</form>"
-        . "</td><td></td>";
+        . "</td>"
+        . "<td>"
+        . "<form method=\"post\" name=\"frmPdf\">"
+        . "{$oHidPdf->get_html()} <br/>{$oButPdf->get_html()}"
+        . "</form>"
+        . "</td>";
       
         if(!isset($this->arJson["data"][$this->arMonth["y"].$this->arMonth["m"]])) 
         {
@@ -278,7 +286,7 @@ class ComponentScheduler
     
     public function run($isPrintL=1)
     {
-        bugp();
+        //bugp();
         //comprueba post para ver si hay algo q guardar. Lo guarda y recarga
         $this->json_save();
         //bug($this->arJson,"json loaded");
