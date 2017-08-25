@@ -80,13 +80,13 @@ class ComponentTopdf
         for($i=0; $i<=$this->iEnd; $i++)
         {
             if($i==0)
-                $oPdf->Cell(25,$iH,"Dia / Recurso",1);
+                $oPdf->MultiCell(25,$iH,"Dia /\n Recurso",1);
             else
             {
                 $sDay = sprintf("%02d",$i);
                 $sDayFull = $this->arHead["month"]["asked"].$sDay;
                 $sDayChar = $this->get_day($sDayFull);                
-                $oPdf->Cell(9,$iH,"$sDayChar\n$sDay",1);
+                $oPdf->MultiCell(9,$iH,"$sDayChar\n$sDay",1);
             }
             //$x = $x + 2;
             //$y = $y+5;
