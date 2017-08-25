@@ -68,6 +68,8 @@ class ComponentTopdf
             //$y = $y+5;
         }
         
+        $iY = $oPdf->GetY();//10.001249999999999
+        //pr($iY);die;
         //$oPdf->SetY($oPdf->GetY()+8);
         //$oPdf->SetXY(8.5,8);
         for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
@@ -76,7 +78,20 @@ class ComponentTopdf
             $oPdf->Cell(30,$iH,$this->arHead["employees"]["names"][$i],1);
         }
         
-        
+        //dias
+        $oPdf->SetFont("Arial","",5);
+        for($i=1; $i<=$this->iEnd;$i++)
+        {
+            $sDay = sprintf("%02d",$i);
+            //empleados
+            foreach($this->arHead["employees"]["full"] as $sK=>$sName)
+            {
+                $sHour = $this->get_hour($sK,$sDay);
+                $oPdf->SetY(10.001249999999999+8);
+                $oPdf->SetX(40);
+                $oPdf->Cell(8,$iH,$oPdf->GetY(),1);
+            }
+        }
         $oPdf->Output();        
     }//run()
     
