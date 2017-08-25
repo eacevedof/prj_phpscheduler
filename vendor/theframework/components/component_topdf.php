@@ -73,34 +73,30 @@ class ComponentTopdf
         //bug($this->arHead);die;
         $oPdf->Cell(30,$iH,$this->arHead["month"]["letters"]);
         //días
-        $oPdf->SetY(10);
+        $oPdf->SetX(0);
         for($i=0; $i<=$this->iEnd; $i++)
         {
             $oPdf->SetY(20);
             if($i==0)
             {
-                $iX = $oPdf->GetX()+25;
-                $oPdf->SetX($iX);
-                $oPdf->MultiCell($iX,$iH,"Dia /\nRecurso",1);
+                $oPdf->SetX(0.5);
+                $oPdf->MultiCell(25,$iH,"Dia /\nRecurso",1);
             }
             else
             {
                 $sDay = sprintf("%02d",$i);
                 $sDayFull = $this->arHead["month"]["asked"].$sDay;
                 $sDayChar = $this->get_day($sDayFull);
-                $iX = $oPdf->GetX()+9;
-                $oPdf->SetX($iX);
-                //$oPdf->MultiCell(9,$iH,"$sDayChar\n$sDay",1);
+                $oPdf->SetX(25.5);
+                $oPdf->MultiCell(9,$iH,"$sDayChar\n$sDay",1);
             }
-        }
+        }//for(idays)
         
-        $iYHours = $oPdf->GetY();//10.001249999999999
-        //pr($iY);die;
-        //$oPdf->SetY($oPdf->GetY()+8);
-        //$oPdf->SetXY(8.5,8);
+        $iYHours = $oPdf->GetY();//20
+        //pr($iYHours);die;
         for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
         {
-            $oPdf->SetY($oPdf->GetY()+8);            
+            $oPdf->SetY($oPdf->GetY()+20);            
             $oPdf->Cell(25,$iH,$this->arHead["employees"]["names"][$i],1);
         }
         
