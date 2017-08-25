@@ -34,16 +34,20 @@ class ComponentTopdf
     {
         $oPdf = new FPDF();
         $oPdf->AddPage("L");
+        //$oPdf->SetX(0);
+        //$oPdf->SetY(0);
         //$oPdf->SetFont("Arial","B",16);
         $oPdf->SetFont("Arial","B",10);
         
-        $x=8.6; $y=8;
+        $iW=8.6; $iH=8;
+        
+        //días
         for($i=0; $i<=$this->iEnd; $i++)
         {
             if($i==0)
-                $oPdf->Cell($x,$y,"Dia/Recurso",1);
+                $oPdf->Cell($iW+20,$iH,"Dia/Recurso",1);
             else
-                $oPdf->Cell($x,$y,sprintf("%02d",$i),1);
+                $oPdf->Cell($iW,$iH,sprintf("%02d",$i),1);
             
             //$x = $x + 2;
             //$y = $y+5;
