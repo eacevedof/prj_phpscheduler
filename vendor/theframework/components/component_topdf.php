@@ -58,30 +58,36 @@ class ComponentTopdf
     private function get_day($sDate)
     {
         $arDate = $this->get_ardate($sDate);
-        $sDay = date("l",mktime(0,0,0,$this->arMonth["m"],$arDate["d"],$this->arMonth["y"]));
-        return substr($sDay,0,0);
+        $sDay = date("l",mktime(0,0,0,$arDate["m"],$arDate["d"],$arDate["y"]));
+        return substr($sDay,0,2);
     }
     
     public function run()
     {
         $oPdf = new FPDF();
         $oPdf->AddPage("L");
-        //$oPdf->SetX(0);
+        $oPdf->SetMargins(0.5,0.5);
         
         //$oPdf->SetFont("Arial","B",16);
-        $oPdf->SetFont("Arial","B",10);
+        $oPdf->SetFont("Courier","B",7);
         
         $iW=8.6; $iH=8;
         
-        $oPdf->Cell(30,$iH, $this->arHead["month"]);
+        //bug($this->arHead);die;
+        $oPdf->Cell(30,$iH,$this->arHead["month"]["letters"]);
         //días
         $oPdf->SetY(20);
         for($i=0; $i<=$this->iEnd; $i++)
         {
             if($i==0)
-                $oPdf->Cell(30,$iH,"Dia / Recurso",1);
+                $oPdf->Cell(25,$iH,"Dia / Recurso",1);
             else
-                $oPdf->Cell(8,$iH,sprintf("%02d",$i),1);
+            {
+                $sDay = sprintf("%02d",$i);
+                $sDayFull = $this->arHead["month"]["asked"].$sDay;
+                $sDayChar = $this->get_day($sDayFull);                
+                $oPdf->Cell(9,$iH,"$sDayChar\n$sDay",1);
+            }
             //$x = $x + 2;
             //$y = $y+5;
         }
@@ -93,7 +99,7 @@ class ComponentTopdf
         for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
         {
             $oPdf->SetY($oPdf->GetY()+8);            
-            $oPdf->Cell(30,$iH,$this->arHead["employees"]["names"][$i],1);
+            $oPdf->Cell(25,$iH,$this->arHead["employees"]["names"][$i],1);
         }
         
         //dias
