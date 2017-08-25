@@ -22,7 +22,7 @@ class ComponentTopdf
     public function __construct($arData)
     {
         //pr($arData);die;
-        $this->arHead["employees"] = $arData["employees"];
+        $this->arHead["employees"] = array_values($arData["employees"]);
         $this->arHead["hours"] = $arData["hours"];
         $this->arData = $arData["data"];
         $this->iEnd = (int)substr($arData["end"],6);
@@ -47,11 +47,18 @@ class ComponentTopdf
             if($i==0)
                 $oPdf->Cell($iW+20,$iH,"Dia/Recurso",1);
             else
-                $oPdf->Cell($iW,$iH,sprintf("%02d",$i),1);
+                $oPdf->Cell(8,$iH,sprintf("%02d",$i),1);
+            
+            
             
             //$x = $x + 2;
             //$y = $y+5;
         }
+        
+        $oPdf->SetXY(8.5,8);
+        for($i=0; $i<count($this->arHead["employees"]); $i++)
+            $oPdf->Cell(8,$iH,$this->arHead["employees"][$i],1);
+        
         $oPdf->Output();        
     }//run()
     
