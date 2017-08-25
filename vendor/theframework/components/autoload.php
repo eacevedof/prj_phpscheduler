@@ -1,26 +1,25 @@
 <?php
 //components autoload
-//autoload.php 1.0.0
-$sPathRoot = dirname(__FILE__);
-$sPathInclude = get_include_path().PATH_SEPARATOR.$sPathRoot;
-set_include_path($sPathInclude);
-
+//autoload.php 1.1.0
 spl_autoload_register(function($sNSClassName)
 {
     $arClass = explode("\\",$sNSClassName);
-    $sClassName = end($arClass);
-    $sClassName = str_replace("Component","",$sClassName);
-    $sClassName = strtolower($sClassName);
-    $sClassName = "component_$sClassName.php";
-    if(stream_resolve_include_path($sClassName))
-        include_once $sClassName;
+    $sCompClassName = end($arClass);
+    $sCompClassName = str_replace("Component","",$sCompClassName);
+    $sClassName = strtolower($sCompClassName);
+    $sClassName = "$sClassName.php";
+    $sCompClassName = "component_$sClassName";
+    if(stream_resolve_include_path($sCompClassName))
+        include_once $sCompClassName;
+    elseif(stream_resolve_include_path($sClassName))
+        include_once $sClassName;    
     elseif(function_exists("lg"))
     {
-        lg("Class not found: $sClassName");
+        lg("Class not found: $sCompClassName or $sClassName");
     }
     else 
     {
-        echo "Class not found: $sClassName";
+        echo "Class not found: $sCompClassName or $sClassName";
     }
 });//spl_autoload_register
 

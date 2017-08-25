@@ -191,6 +191,7 @@ class ComponentScheduler
         $oButPdf->set_innerhtml("PDF");
         
         $oHidPdf = new HelperInputHidden("hidPdf");
+        $oHidPdf->set_name("hidPdf");
         $oHidPdf->set_value($this->arMonth["y"].$this->arMonth["m"]);
         
         $sHtml = "<td>"
@@ -274,7 +275,7 @@ class ComponentScheduler
     private function get_td($iDate)
     {
         $arDate = $this->get_ardate($iDate);
-        $sDay = date("l",mktime(0,0,0,$this->arMonth["m"],$arDate["d"],$this->arMonth["y"]));        
+        $sDay = date("l",mktime(0,0,0,$this->arMonth["m"],$arDate["d"],$this->arMonth["y"]));
         $sHtml = "<b>{$sDay} {$arDate["d"]}</b><br/>";
         $sHtml .= "<table>";
         $sHtml .= "<tr>";
@@ -285,8 +286,9 @@ class ComponentScheduler
         return $sHtml;
     }
     
-    public function run($isPrintL=1)
+    public function run()
     {
+        $this->pdf();
         //bugp();
         //comprueba post para ver si hay algo q guardar. Lo guarda y recarga
         $this->json_save();
@@ -329,6 +331,15 @@ class ComponentScheduler
 
     public function pdf()
     {
-        
+        if($this->get_post("hidPdf"))
+        {
+            $sMonth = $this->get_post("hidPdf");
+            $this->iEnd = date("Ymt",strtotime($this->iStart));
+            $this->iEnd = (int) $this->iEnd;
+            $arData = $this->arJson["data"][$sMonth];
+            //pr($arData,"arData");
+            $oToPdf = new ComponentTopdf($arData);
+            exit();
+        }
     }
 }//ComponentScheduler
