@@ -68,7 +68,7 @@ class ComponentTopdf
             //$y = $y+5;
         }
         
-        $iY = $oPdf->GetY();//10.001249999999999
+        $iYHours = $oPdf->GetY();//10.001249999999999
         //pr($iY);die;
         //$oPdf->SetY($oPdf->GetY()+8);
         //$oPdf->SetXY(8.5,8);
@@ -87,7 +87,7 @@ class ComponentTopdf
             foreach($this->arHead["employees"]["full"] as $sK=>$sName)
             {
                 $sHour = $this->get_hour($sK,$sDay);
-                $oPdf->SetY(10.001249999999999+8);
+                $oPdf->SetY($iYHours+8);
                 $oPdf->SetX(40);
                 $oPdf->Cell(8,$iH,$oPdf->GetY(),1);
             }
