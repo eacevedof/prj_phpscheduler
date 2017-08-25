@@ -68,7 +68,7 @@ class ComponentTopdf
         $oPdf->AddPage("L");
         $oPdf->SetMargins(0.5,0.5);
         
-        $oPdf->SetFont("Courier","B",7);
+        $oPdf->SetFont("Courier","B",10);
         $iH=8;
         //bug($this->arHead);die;
         $oPdf->Cell(30,$iH,$this->arHead["month"]["letters"]);
@@ -81,14 +81,16 @@ class ComponentTopdf
             {
                 $oPdf->SetX(0.5);
                 $oPdf->MultiCell(25,$iH,"Dia /\nRecurso",1);
+                $iX = 25+0.5;
             }
             else
             {
                 $sDay = sprintf("%02d",$i);
                 $sDayFull = $this->arHead["month"]["asked"].$sDay;
                 $sDayChar = $this->get_day($sDayFull);
-                $oPdf->SetX(25.5);
-                $oPdf->MultiCell(9,$iH,"$sDayChar\n$sDay",1);
+                $oPdf->SetX($iX);
+                $oPdf->MultiCell(8,$iH,"$sDayChar\n$sDay",1);
+                $iX = $iX+8;
             }
         }//for(idays)
         
