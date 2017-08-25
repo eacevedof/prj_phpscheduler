@@ -337,7 +337,7 @@ class ComponentScheduler
             $arMonth = $this->get_ardate($sMonth);
             $this->iEnd = date("Ymt",strtotime($this->iStart));
             $this->iEnd = (int) $this->iEnd;
-            $arData["month"] = date("l",mktime(0,0,0,$arMonth["m"],"01",$arMonth["y"]))."- {$arMonth["y"]}";
+            $arData["month"] = date("F",mktime(0,0,0,$arMonth["m"],"01",$arMonth["y"]))." {$arMonth["y"]}";
             $arData["data"] = $this->arJson["data"][$sMonth];
             $arData["end"] = $this->iEnd;
             $arData["employees"] = $this->arEmployees;

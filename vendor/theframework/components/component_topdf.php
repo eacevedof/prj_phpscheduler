@@ -24,6 +24,7 @@ class ComponentTopdf
         //pr($arData);die;
         $arTmp = array_values($arData["employees"]);
         sort($arTmp,SORT_STRING);
+        $this->arHead["month"] = $arData["month"];
         $this->arHead["employees"]["full"] = $arData["employees"];
         $this->arHead["employees"]["names"] = $arTmp;
         $this->arHead["hours"] = $arData["hours"];
@@ -51,17 +52,19 @@ class ComponentTopdf
         $oPdf = new FPDF();
         $oPdf->AddPage("L");
         //$oPdf->SetX(0);
-        //$oPdf->SetY(0);
+        
         //$oPdf->SetFont("Arial","B",16);
         $oPdf->SetFont("Arial","B",10);
         
         $iW=8.6; $iH=8;
         
+        $oPdf->Cell(30,$iH, $this->arHead["month"]);
         //días
+        $oPdf->SetY(20);
         for($i=0; $i<=$this->iEnd; $i++)
         {
             if($i==0)
-                $oPdf->Cell(30,$iH,"Dia/Recurso",1);
+                $oPdf->Cell(30,$iH,"Dia / Recurso",1);
             else
                 $oPdf->Cell(8,$iH,sprintf("%02d",$i),1);
             //$x = $x + 2;
@@ -80,7 +83,8 @@ class ComponentTopdf
         
         //dias
         $oPdf->SetFont("Arial","",5);
-        for($i=1; $i<=$this->iEnd;$i++)
+        
+        for($i=1; $i<=$this->iEnd; $i++)
         {
             $sDay = sprintf("%02d",$i);
             //empleados
@@ -88,7 +92,7 @@ class ComponentTopdf
             {
                 $sHour = $this->get_hour($sK,$sDay);
                 $oPdf->SetY($iYHours+8);
-                $oPdf->SetX(40);
+                $oPdf->SetX(40*$i);
                 $oPdf->Cell(8,$iH,$oPdf->GetY(),1);
             }
         }
