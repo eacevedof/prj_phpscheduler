@@ -45,7 +45,7 @@ class ComponentTopdf
         for($i=0; $i<=$this->iEnd; $i++)
         {
             if($i==0)
-                $oPdf->Cell($iW+20,$iH,"Dia/Recurso",1);
+                $oPdf->Cell(30,$iH,"Dia/Recurso",1);
             else
                 $oPdf->Cell(8,$iH,sprintf("%02d",$i),1);
             
@@ -55,10 +55,13 @@ class ComponentTopdf
             //$y = $y+5;
         }
         
+        $oPdf->SetY(15);
         $oPdf->SetXY(8.5,8);
         for($i=0; $i<count($this->arHead["employees"]); $i++)
-            $oPdf->Cell(8,$iH,$this->arHead["employees"][$i],1);
-        
+        {
+            $oPdf->Cell(30,$iH,$this->arHead["employees"][$i],1);
+            $oPdf->SetY($oPdf->GetY()+8);
+        }
         $oPdf->Output();        
     }//run()
     
