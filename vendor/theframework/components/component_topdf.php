@@ -26,21 +26,23 @@ class ComponentTopdf
         $this->arHead["hours"] = $arData["hours"];
         $this->arData = $arData["data"];
         $this->iEnd = (int)substr($arData["end"],6);
+        //pr($this->iEnd);die;
         //bugif();
     }
     
     public function run()
     {
         $oPdf = new FPDF();
-        $oPdf->AddPage();
-        $oPdf->SetFont("Arial","B",16);
+        $oPdf->AddPage("L");
+        //$oPdf->SetFont("Arial","B",16);
+        $oPdf->SetFont("Arial","B",10);
         
-        $x=40; $y=10;
+        $x=8.5; $y=10;
         for($i=0; $i<=$this->iEnd; $i++)
         {
-            $oPdf->Cell($x,$y,"algun texto con hh:mm");
-            $x = $x+40;
-            $y = $y+10;
+            $oPdf->Cell($x,$y,($i!=0?sprintf("%02d",$i):"Dia/Recurso"));
+            //$x = $x + 2;
+            //$y = $y+5;
         }
         $oPdf->Output();        
     }//run()
