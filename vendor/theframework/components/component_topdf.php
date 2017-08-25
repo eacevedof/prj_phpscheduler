@@ -22,12 +22,28 @@ class ComponentTopdf
     public function __construct($arData)
     {
         //pr($arData);die;
-        $this->arHead["employees"] = array_values($arData["employees"]);
+        $arTmp = array_values($arData["employees"]);
+        sort($arTmp,SORT_STRING);
+        $this->arHead["employees"]["full"] = $arData["employees"];
+        $this->arHead["employees"]["names"] = $arTmp;
         $this->arHead["hours"] = $arData["hours"];
         $this->arData = $arData["data"];
+        //pr($this->arData);die;
         $this->iEnd = (int)substr($arData["end"],6);
         //pr($this->iEnd);die;
         //bugif();
+    }
+    
+    private function get_hour($sKeyEmp,$sDay)
+    {
+        $arHours = (isset($this->arData[$sDay])?$this->arData[$sDay]:[]);
+        if($arHours)
+        {
+            foreach($arHours as $sH=>$arEmp)
+                if(in_array($sKeyEmp,$arEmp))
+                    return $sH;
+        }
+        return "";
     }
     
     public function run()
@@ -48,20 +64,19 @@ class ComponentTopdf
                 $oPdf->Cell(30,$iH,"Dia/Recurso",1);
             else
                 $oPdf->Cell(8,$iH,sprintf("%02d",$i),1);
-            
-            
-            
             //$x = $x + 2;
             //$y = $y+5;
         }
         
-        $oPdf->SetY(15);
-        $oPdf->SetXY(8.5,8);
-        for($i=0; $i<count($this->arHead["employees"]); $i++)
+        //$oPdf->SetY($oPdf->GetY()+8);
+        //$oPdf->SetXY(8.5,8);
+        for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
         {
-            $oPdf->Cell(30,$iH,$this->arHead["employees"][$i],1);
-            $oPdf->SetY($oPdf->GetY()+8);
+            $oPdf->SetY($oPdf->GetY()+8);            
+            $oPdf->Cell(30,$iH,$this->arHead["employees"]["names"][$i],1);
         }
+        
+        
         $oPdf->Output();        
     }//run()
     
