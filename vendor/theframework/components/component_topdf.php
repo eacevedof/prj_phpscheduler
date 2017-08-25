@@ -47,6 +47,21 @@ class ComponentTopdf
         return "";
     }
     
+    private function get_ardate($sDate)
+    {
+        $arDate["y"] = substr($sDate,0,4);
+        $arDate["m"] = substr($sDate,4,2);
+        $arDate["d"] = substr($sDate,6,2);
+        return $arDate;
+    }
+    
+    private function get_day($sDate)
+    {
+        $arDate = $this->get_ardate($sDate);
+        $sDay = date("l",mktime(0,0,0,$this->arMonth["m"],$arDate["d"],$this->arMonth["y"]));
+        return substr($sDay,0,0);
+    }
+    
     public function run()
     {
         $oPdf = new FPDF();
