@@ -68,28 +68,30 @@ class ComponentTopdf
         $oPdf->AddPage("L");
         $oPdf->SetMargins(0.5,0.5);
         
-        //$oPdf->SetFont("Arial","B",16);
         $oPdf->SetFont("Courier","B",7);
-        
-        $iW=8.6; $iH=8;
-        
+        $iH=8;
         //bug($this->arHead);die;
         $oPdf->Cell(30,$iH,$this->arHead["month"]["letters"]);
         //días
-        $oPdf->SetY(20);
+        $oPdf->SetY(10);
         for($i=0; $i<=$this->iEnd; $i++)
         {
+            $oPdf->SetY(20);
             if($i==0)
-                $oPdf->MultiCell(25,$iH,"Dia /\n Recurso",1);
+            {
+                $iX = $oPdf->GetX()+25;
+                $oPdf->SetX($iX);
+                $oPdf->MultiCell($iX,$iH,"Dia /\nRecurso",1);
+            }
             else
             {
                 $sDay = sprintf("%02d",$i);
                 $sDayFull = $this->arHead["month"]["asked"].$sDay;
-                $sDayChar = $this->get_day($sDayFull);                
-                $oPdf->MultiCell(9,$iH,"$sDayChar\n$sDay",1);
+                $sDayChar = $this->get_day($sDayFull);
+                $iX = $oPdf->GetX()+9;
+                $oPdf->SetX($iX);
+                //$oPdf->MultiCell(9,$iH,"$sDayChar\n$sDay",1);
             }
-            //$x = $x + 2;
-            //$y = $y+5;
         }
         
         $iYHours = $oPdf->GetY();//10.001249999999999
@@ -102,9 +104,8 @@ class ComponentTopdf
             $oPdf->Cell(25,$iH,$this->arHead["employees"]["names"][$i],1);
         }
         
-        //dias
         $oPdf->SetFont("Arial","",5);
-        
+        //dias
         for($i=1; $i<=$this->iEnd; $i++)
         {
             $sDay = sprintf("%02d",$i);
