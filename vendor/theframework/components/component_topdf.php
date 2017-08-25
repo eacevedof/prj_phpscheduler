@@ -37,10 +37,14 @@ class ComponentTopdf
         //$oPdf->SetFont("Arial","B",16);
         $oPdf->SetFont("Arial","B",10);
         
-        $x=8.5; $y=10;
+        $x=8.6; $y=8;
         for($i=0; $i<=$this->iEnd; $i++)
         {
-            $oPdf->Cell($x,$y,($i!=0?sprintf("%02d",$i):"Dia/Recurso"));
+            if($i==0)
+                $oPdf->Cell($x,$y,"Dia/Recurso",1);
+            else
+                $oPdf->Cell($x,$y,sprintf("%02d",$i),1);
+            
             //$x = $x + 2;
             //$y = $y+5;
         }
