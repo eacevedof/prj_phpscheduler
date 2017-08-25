@@ -15,18 +15,34 @@ use FPDF;
 
 class ComponentTopdf 
 {
+    private $arHead;
     private $arData; //array con datos
     private $iEnd; //end day
     
-    public function __construct($arData,$iEnd=30)
+    public function __construct($arData)
     {
-        $this->arData = $arData;
-        $this->iEnd = $iEnd;
+        //pr($arData);die;
+        $this->arHead["employees"] = $arData["employees"];
+        $this->arHead["hours"] = $arData["hours"];
+        $this->arData = $arData["data"];
+        $this->iEnd = (int)substr($arData["end"],6);
         //bugif();
-        $pdf = new FPDF();
-$pdf->AddPage();
-$pdf->SetFont('Arial','B',16);
-$pdf->Cell(40,10,'¡Hola, Mundo!');
-$pdf->Output();
     }
+    
+    public function run()
+    {
+        $oPdf = new FPDF();
+        $oPdf->AddPage();
+        $oPdf->SetFont("Arial","B",16);
+        
+        $x=40; $y=10;
+        for($i=0; $i<=$this->iEnd; $i++)
+        {
+            $oPdf->Cell($x,$y,"algun texto con hh:mm");
+            $x = $x+40;
+            $y = $y+10;
+        }
+        $oPdf->Output();        
+    }//run()
+    
 }//ComponentTopdf

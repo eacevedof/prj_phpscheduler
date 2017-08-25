@@ -334,11 +334,18 @@ class ComponentScheduler
         if($this->get_post("hidPdf"))
         {
             $sMonth = $this->get_post("hidPdf");
+            $arMonth = $this->get_ardate($sMonth);
             $this->iEnd = date("Ymt",strtotime($this->iStart));
             $this->iEnd = (int) $this->iEnd;
-            $arData = $this->arJson["data"][$sMonth];
+            $arData["month"] = date("l",mktime(0,0,0,$arMonth["m"],"01",$arMonth["y"]))."- {$arMonth["y"]}";
+            $arData["data"] = $this->arJson["data"][$sMonth];
+            $arData["end"] = $this->iEnd;
+            $arData["employees"] = $this->arEmployees;
+            $arData["hours"] = $this->arHours;
+            
             //pr($arData,"arData");
             $oToPdf = new ComponentTopdf($arData);
+            $oToPdf->run();
             exit();
         }
     }
