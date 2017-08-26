@@ -42,7 +42,8 @@ class ComponentTopdf
         {
             foreach($arHours as $sH=>$arEmp)
                 if(in_array($sKeyEmp,$arEmp))
-                    return $sH;
+                    //return  strtoupper(substr($sH,0,2).":".substr($sH,2,2));
+                    return  substr($sH,0,2).":".substr($sH,2,2);
         }
         return "";
     }
@@ -69,7 +70,7 @@ class ComponentTopdf
         $oPdf->SetMargins(0.5,0.5);
         
         $oPdf->SetFont("Courier","B",10);
-        $iH=8;
+        $iH = 8;
         //bug($this->arHead);die;
         $oPdf->Cell(30,$iH,$this->arHead["month"]["letters"]);
         //días
@@ -90,7 +91,7 @@ class ComponentTopdf
                 $sDayChar = $this->get_day($sDayFull);
                 $oPdf->SetX($iX);
                 $oPdf->MultiCell(8,$iH,"$sDayChar\n$sDay",1);
-                $iX = $iX+8;
+                $iX = $iX + 8;
             }
         }//for(idays)
         
@@ -102,7 +103,7 @@ class ComponentTopdf
             $oPdf->MultiCell(25,$iH,$this->arHead["employees"]["names"][$i],1);
         }//for Nombres
         
-        $oPdf->SetFont("Arial","",5);
+        $oPdf->SetFont("Arial","",6.75);
         $iX = 25.5;
         //dias
         for($i=1; $i<=$this->iEnd; $i++)
@@ -110,13 +111,16 @@ class ComponentTopdf
             $oPdf->SetY($iYHours);
             $sDay = sprintf("%02d",$i);
             //empleados
-            foreach($this->arHead["employees"]["full"] as $sK=>$sName)
+            $arEmp = $this->arHead["employees"]["full"];
+            asort($arEmp);
+            //pr($arEmp);die;
+            foreach($arEmp as $sK=>$sName)
             {
                 $oPdf->SetX($iX);
                 $sHour = $this->get_hour($sK,$sDay);
                 $oPdf->MultiCell(8,$iH,$sHour,1);
             }//for empleados
-            $iX= $iX+8;
+            $iX = $iX+8;
         }//for dias
         $oPdf->Output();        
     }//run()
