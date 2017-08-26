@@ -98,7 +98,8 @@ class ComponentTopdf
         //pr($iYHours);die;
         for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
         {
-            $oPdf->SetY($oPdf->GetY()+20);            
+            if($i==0) $oPdf->SetY($oPdf->GetY());
+            else $oPdf->SetY($oPdf->GetY()+$iH);
             $oPdf->Cell(25,$iH,$this->arHead["employees"]["names"][$i],1);
         }
         
