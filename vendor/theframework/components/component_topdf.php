@@ -101,22 +101,26 @@ class ComponentTopdf
             if($i==0) $oPdf->SetY($oPdf->GetY());
             else $oPdf->SetY($oPdf->GetY()+$iH);
             $oPdf->Cell(25,$iH,$this->arHead["employees"]["names"][$i],1);
-        }
+        }//for Nombres
         
         $oPdf->SetFont("Arial","",5);
+        $oPdf->SetY($iYHours);
+        $oPdf->SetX(30);
+        //$oPdf->Cell(8,$iH,"xxxx",1);
         //dias
         for($i=1; $i<=$this->iEnd; $i++)
         {
+            $oPdf->SetY($iYHours);
+            if($i!=1)
+                $oPdf->SetX($oPdf->GetX()+8);
             $sDay = sprintf("%02d",$i);
             //empleados
             foreach($this->arHead["employees"]["full"] as $sK=>$sName)
             {
                 $sHour = $this->get_hour($sK,$sDay);
-                $oPdf->SetY($iYHours+8);
-                $oPdf->SetX(40*$i);
-                $oPdf->Cell(8,$iH,$oPdf->GetY(),1);
-            }
-        }
+                $oPdf->MultiCell(8,$iH,$sHour,1);
+            }//for empleados
+        }//for dias
         $oPdf->Output();        
     }//run()
     
