@@ -103,9 +103,7 @@ class ComponentTopdf
         }//for Nombres
         
         $oPdf->SetFont("Arial","",5);
-
         $iX = 25.5;
-
         //dias
         for($i=1; $i<=$this->iEnd; $i++)
         {            
@@ -118,7 +116,7 @@ class ComponentTopdf
                 $sHour = $this->get_hour($sK,$sDay);
                 $oPdf->MultiCell(8,$iH,$sHour,1);
             }//for empleados
-            
+            $iX= $iX+8;
         }//for dias
         $oPdf->Output();        
     }//run()
