@@ -35,7 +35,7 @@ class ComponentScheduler
         $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"
             ,"dayana"=>"Dayana","milenka"=>"Milenka","omayra"=>"Omayra"];
         asort($this->arEmployees);
-        $this->arHours = [""=>"...hour","1000"=>"10:00","1130"=>"11:30",
+        $this->arHours = [""=>"...hour","1000"=>"10:00","1030"=>"10:30","1130"=>"11:30",
             "1200"=>"12:00","1230"=>"12:30","1300"=>"13:00","free"=>"Libre"];
         $this->json_load();
         //pr($this->arJson["data"]);
