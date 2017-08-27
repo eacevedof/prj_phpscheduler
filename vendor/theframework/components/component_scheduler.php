@@ -31,10 +31,11 @@ class ComponentScheduler
     {
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
         $this->arConfig = ["pathroot"=>$_SERVER["DOCUMENT_ROOT"]];
-        $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];
-        $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"];
+        $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];//mi1030,om12,day12
+        $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"
+            ,"dayana"=>"Dayana","milenka"=>"Milenka","omayra"=>"Omayra"];
+        asort($this->arEmployees);
         $this->arHours = [""=>"...hour","1000"=>"10:00","1130"=>"11:30","1230"=>"12:30","1330"=>"13:30","free"=>"Libre"];
-        
         $this->json_load();
         //pr($this->arJson["data"]);
     }
@@ -188,7 +189,7 @@ class ComponentScheduler
         $oButGo->set_type("submit");
         
         $oButPdf = clone($oButGo);
-        $oButPdf->set_innerhtml("PDF");
+        $oButPdf->set_innerhtml("Ver Horario");
         
         $oHidPdf = new HelperInputHidden("hidPdf");
         $oHidPdf->set_name("hidPdf");
