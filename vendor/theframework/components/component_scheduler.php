@@ -288,7 +288,7 @@ class ComponentScheduler
     
     public function run()
     {
-        $this->pdf();
+        //$this->pdf();
         //bugp();
         //comprueba post para ver si hay algo q guardar. Lo guarda y recarga
         $this->json_save();

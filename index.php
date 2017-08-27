@@ -22,6 +22,7 @@ require_once "vendor/autoload.php";
 require_once "components/autoload.php";
 
 $oComp = new TheFramework\Components\ComponentScheduler();
+$oComp->run();
 ?>
 <!DOCTYPE html>
 <html lang="en">
