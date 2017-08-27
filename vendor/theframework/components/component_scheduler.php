@@ -184,7 +184,7 @@ class ComponentScheduler
         $oSelMonth->set_value_to_select($this->arMonth["m"]);
         
         $oButGo = new HelperButtonBasic("butMonth");
-        $oButGo->set_innerhtml("Go month...");
+        $oButGo->set_innerhtml("Select Month");
         $oButGo->set_type("submit");
         
         $oButPdf = clone($oButGo);
@@ -296,7 +296,7 @@ class ComponentScheduler
         $iColRows = 2;
         
         $sDatePicker = $this->get_datepick();
-        $sHtml = "<table>";
+        $sHtml = "<table class=\"table table-striped table-responsive table-hover\">";
         $sHtml .= "<tr>$sDatePicker</tr>";
         $this->arMonth["name"] = date("F",mktime(0,0,0,$this->arMonth["m"],10));
         $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th></th></tr>";
