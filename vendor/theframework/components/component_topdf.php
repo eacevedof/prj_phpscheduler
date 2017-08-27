@@ -107,7 +107,7 @@ class ComponentTopdf
             $sEmpName = $this->arHead["employees"]["names"][$i];
             $oPdf->SetY($oPdf->GetY());
             $oPdf->SetFillColor(255,255,255);
-            if(in_array($sEmpName,$arSalon)) $oPdf->SetFillColor(245,149,255);
+            if(in_array($sEmpName,$arSalon)) $oPdf->SetFillColor(255,204,255);
             $oPdf->MultiCell(25,$iH,$sEmpName,1,"L",1);
         }//for Nombres
         
@@ -127,7 +127,7 @@ class ComponentTopdf
                 $oPdf->SetX($iX);
                 $sHour = $this->get_hour($sK,$sDay);
                 $oPdf->SetFillColor(255,255,255);
-                if($sHour=="10:00") $oPdf->SetFillColor(1,160,252);
+                if($sHour=="10:00") $oPdf->SetFillColor(224,224,224);
                 elseif($sHour=="free") $oPdf->SetFillColor(252,168,0);                
                 $oPdf->MultiCell($iW,$iH,$sHour,1,"C",1);
             }//for empleados
