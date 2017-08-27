@@ -296,16 +296,16 @@ class ComponentScheduler
         $iColRows = 2;
         
         $sDatePicker = $this->get_datepick();
-        $sHtml = "<table class=\"table table-striped table-responsive table-hover\">";
+        $sHtml = "<table class=\"table table-responsive table-hover\">";
         $sHtml .= "<tr>$sDatePicker</tr>";
         $this->arMonth["name"] = date("F",mktime(0,0,0,$this->arMonth["m"],10));
         $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th></th></tr>";
-        $iCol = 0;
+        //$iCol = 0;
         
         for($i=$this->iStart; $i<=$this->iEnd; $i++)
         {
-            $isStartCol = ($iCol%$iColRows)==0;
-            if($isStartCol)
+            //$isStartCol = ($iCol%$iColRows)==0;
+            //if($isStartCol)
                 $sHtml .= "<tr>";
             //devuelve la celda con el form
             $sHtmlTD = $this->get_td($i);
@@ -314,11 +314,12 @@ class ComponentScheduler
             $sHtml .= $sHtmlTD;
             $sHtml .= "</td>";
             
-            $isEndCol = ($iCol%$iColRows)==($iColRows-1);
-            if($isEndCol)
+            //$isEndCol = ($iCol%$iColRows)==($iColRows-1);
+            //if($isEndCol)
                 $sHtml .= "</tr>";
-            $iCol++;
-        }
+            //$iCol++;
+        }//for
+        
         //$sHtml .= "<tr><td>{$this->arMonth["name"]}</td><td>{$oButton->get_html()}</td></tr>";
         $sHtml .= "</table>";
         s($sHtml);
