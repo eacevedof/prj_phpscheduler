@@ -3,7 +3,9 @@
 //carga el loader de composer. Este loader solo tiene registrado el loader de helpers.
 //C:\xampp\htdocs\wwwsched
 $sPathRoot = dirname(__FILE__);
+//var_dump($sPathRoot);die;
 $sPathRoot = str_replace("\\","/",$sPathRoot);
+//$sPathRoot .= "/..";
 $arPaths = [
     get_include_path(),
     "$sPathRoot/the_application",
