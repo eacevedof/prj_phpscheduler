@@ -54,14 +54,12 @@ $oComp = new TheFramework\Components\ComponentScheduler();
     </div>
     <!--/elem_navbar-->     
     <div class="row">
-        <!--view_list 1.1.0-->
         <div class="col-lg-12">
-            <br/><br/><br/>
+            <br/>
 <?php
 $oComp->run();
 ?>
         </div>
-        <!--/view_list-->        
     </div>
     <p class="text-center">
 <!--elem_totop-->
