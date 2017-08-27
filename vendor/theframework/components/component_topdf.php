@@ -71,6 +71,7 @@ class ComponentTopdf
         
         $oPdf->SetFont("Courier","B",10);
         $iH = 8;
+        $iW = 8.7;
         //bug($this->arHead);die;
         $oPdf->Cell(30,$iH,$this->arHead["month"]["letters"]);
         //días
@@ -92,8 +93,8 @@ class ComponentTopdf
                 $oPdf->SetX($iX);
                 $oPdf->SetFillColor(255,255,255);
                 if($sDayChar=="Su") $oPdf->SetFillColor(2,252,31);
-                $oPdf->MultiCell(8,$iH,"$sDayChar\n$sDay",1,"C",1);
-                $iX = $iX + 8;
+                $oPdf->MultiCell($iW,$iH,"$sDayChar\n$sDay",1,"C",1);
+                $iX = $iX + $iW;
             }
         }//for(idays)
         
@@ -105,7 +106,7 @@ class ComponentTopdf
             $oPdf->MultiCell(25,$iH,$this->arHead["employees"]["names"][$i],1);
         }//for Nombres
         
-        $oPdf->SetFont("Arial","",6.75);
+        $oPdf->SetFont("Arial","",7.5);
         $iX = 25.5;
         //dias
         for($i=1; $i<=$this->iEnd; $i++)
@@ -123,9 +124,9 @@ class ComponentTopdf
                 $oPdf->SetFillColor(255,255,255);
                 if($sHour=="10:00") $oPdf->SetFillColor(1,160,252);
                 elseif($sHour=="free") $oPdf->SetFillColor(252,168,0);                
-                $oPdf->MultiCell(8,$iH,$sHour,1,"C",1);
+                $oPdf->MultiCell($iW,$iH,$sHour,1,"C",1);
             }//for empleados
-            $iX = $iX+8;
+            $iX = $iX+$iW;
         }//for dias
         $oPdf->Output();        
     }//run()
