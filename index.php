@@ -56,6 +56,7 @@ $oComp = new TheFramework\Components\ComponentScheduler();
     <div class="row">
         <!--view_list 1.1.0-->
         <div class="col-lg-12">
+            <br/><br/><br/>
 <?php
 $oComp->run();
 ?>
