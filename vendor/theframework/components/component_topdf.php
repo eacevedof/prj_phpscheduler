@@ -43,7 +43,7 @@ class ComponentTopdf
             foreach($arHours as $sH=>$arEmp)
                 if(in_array($sKeyEmp,$arEmp))
                     //return  strtoupper(substr($sH,0,2).":".substr($sH,2,2));
-                    return  substr($sH,0,2).":".substr($sH,2,2);
+                    return  ($sH!=="free")?substr($sH,0,2).":".substr($sH,2,2):$sH;
         }
         return "";
     }
@@ -90,7 +90,9 @@ class ComponentTopdf
                 $sDayFull = $this->arHead["month"]["asked"].$sDay;
                 $sDayChar = $this->get_day($sDayFull);
                 $oPdf->SetX($iX);
-                $oPdf->MultiCell(8,$iH,"$sDayChar\n$sDay",1);
+                $oPdf->SetFillColor(255,255,255);
+                if($sDayChar=="Su") $oPdf->SetFillColor(2,252,31);
+                $oPdf->MultiCell(8,$iH,"$sDayChar\n$sDay",1,"C",1);
                 $iX = $iX + 8;
             }
         }//for(idays)
@@ -118,7 +120,10 @@ class ComponentTopdf
             {
                 $oPdf->SetX($iX);
                 $sHour = $this->get_hour($sK,$sDay);
-                $oPdf->MultiCell(8,$iH,$sHour,1);
+                $oPdf->SetFillColor(255,255,255);
+                if($sHour=="10:00") $oPdf->SetFillColor(1,160,252);
+                elseif($sHour=="free") $oPdf->SetFillColor(252,168,0);                
+                $oPdf->MultiCell(8,$iH,$sHour,1,"C",1);
             }//for empleados
             $iX = $iX+8;
         }//for dias
