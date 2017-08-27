@@ -99,11 +99,16 @@ class ComponentTopdf
         }//for(idays)
         
         $iYHours = $oPdf->GetY();//20
-        //pr($iYHours);die;
+        //columna empleados
+        //$arSalon = ["dayana","milenka","omayra"];
+        $arSalon = ["Dayana","Milenka","Omayra"];
         for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
         {
+            $sEmpName = $this->arHead["employees"]["names"][$i];
             $oPdf->SetY($oPdf->GetY());
-            $oPdf->MultiCell(25,$iH,$this->arHead["employees"]["names"][$i],1);
+            $oPdf->SetFillColor(255,255,255);
+            if(in_array($sEmpName,$arSalon)) $oPdf->SetFillColor(245,149,255);
+            $oPdf->MultiCell(25,$iH,$sEmpName,1,"L",1);
         }//for Nombres
         
         $oPdf->SetFont("Arial","",7.5);
@@ -115,7 +120,7 @@ class ComponentTopdf
             $sDay = sprintf("%02d",$i);
             //empleados
             $arEmp = $this->arHead["employees"]["full"];
-            asort($arEmp);
+            //asort($arEmp);
             //pr($arEmp);die;
             foreach($arEmp as $sK=>$sName)
             {

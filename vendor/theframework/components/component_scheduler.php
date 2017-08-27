@@ -201,7 +201,7 @@ class ComponentScheduler
         . "{$oSelMonth->get_html()} - {$oSelYear->get_html()} <br/>{$oButGo->get_html()}"
         . "</form>"
         . "</td>"
-        . "<td>"
+        . "<td align=\"left\">"
         . "<form method=\"post\" name=\"frmPdf\">"
         . "{$oHidPdf->get_html()} <br/>{$oButPdf->get_html()}"
         . "</form>"
@@ -249,13 +249,17 @@ class ComponentScheduler
         
         $sHtml .= $oHid->get_html();
             
+        $iEmp = 0;
         foreach($this->arEmployees as $kEmpl=>$sEmpl)
         {
             $sHour = $this->get_hour($arDate["y"],$arDate["m"],$arDate["d"],$kEmpl);
             //pr($sHour,"hour");
             $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour[$kEmpl]");
             $oSelHour->set_value_to_select($sHour);
+            if($iEmp%4==0) $sHtml.="<tr>";
             $sHtml .= "<td>$sEmpl</td><td>{$oSelHour->get_html()}</td>";
+            if($iEmp%4==(4-1)) $sHtml.="</tr>";
+            $iEmp++;
         }
         
         $sHtml .= "<td>".$oButton->get_html()."</td>";
