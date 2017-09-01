@@ -82,7 +82,7 @@ class ComponentTopdf
             if($i==0)
             {
                 $oPdf->SetX(0.5);
-                $oPdf->MultiCell(25,$iH,"Dia /\nRecurso",1);
+                $oPdf->MultiCell(25,$iH,"Dia /\nRRHH",1);
                 $iX = 25+0.5;
             }
             else
