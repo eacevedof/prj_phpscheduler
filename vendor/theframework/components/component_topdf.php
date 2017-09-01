@@ -43,7 +43,7 @@ class ComponentTopdf
             foreach($arHours as $sH=>$arEmp)
                 if(in_array($sKeyEmp,$arEmp))
                     //return  strtoupper(substr($sH,0,2).":".substr($sH,2,2));
-                    return  ($sH!=="free")?substr($sH,0,2).":".substr($sH,2,2):$sH;
+                    return  ($sH!=="off")?substr($sH,0,2).":".substr($sH,2,2):$sH;
         }
         return "";
     }
@@ -128,7 +128,7 @@ class ComponentTopdf
                 $sHour = $this->get_hour($sK,$sDay);
                 $oPdf->SetFillColor(255,255,255);
                 if($sHour=="10:00") $oPdf->SetFillColor(224,224,224);
-                elseif($sHour=="free") $oPdf->SetFillColor(252,168,0);                
+                elseif($sHour=="off") $oPdf->SetFillColor(255,165,0);                
                 $oPdf->MultiCell($iW,$iH,$sHour,1,"C",1);
             }//for empleados
             $iX = $iX+$iW;
