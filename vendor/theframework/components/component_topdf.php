@@ -73,7 +73,7 @@ class ComponentTopdf
         $iH = 8;
         $iW = 8.7;
         //bug($this->arHead);die;
-        $oPdf->Cell(30,$iH,"EL CHALÁN - Horas de entrada personal del mes: ".strtoupper($this->arHead["month"]["letters"]));
+        $oPdf->Cell(30,$iH,"EL CHALAN - Horas de entrada personal del mes: ".strtoupper($this->arHead["month"]["letters"]));
         //días
         $oPdf->SetX(0);
         for($i=0; $i<=$this->iEnd; $i++)
