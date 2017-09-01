@@ -127,8 +127,8 @@ class ComponentTopdf
                 $oPdf->SetX($iX);
                 $sHour = $this->get_hour($sK,$sDay);
                 $oPdf->SetFillColor(255,255,255);
-                if($sHour=="10:00") $oPdf->SetFillColor(224,224,224);
-                elseif($sHour=="off") $oPdf->SetFillColor(255,165,0);                
+                if($sHour=="10:00") $oPdf->SetFillColor(0,191,255);//blue
+                elseif($sHour=="off") $oPdf->SetFillColor(255,165,0);//orange             
                 $oPdf->MultiCell($iW,$iH,$sHour,1,"C",1);
             }//for empleados
             $iX = $iX+$iW;
