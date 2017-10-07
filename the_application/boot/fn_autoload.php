@@ -1,18 +1,29 @@
 <?php
-pr("boot/autoload.php");
-//the_application/autoload
-//autoload.php 1.0.0
+//the_application/fn_autoload
+//autoload.php 1.0.2
+//pr("boot/fn_autoload.php 1.0.1");
 spl_autoload_register(function($sNSClassName)
 {
     //bug($sNSClassName,"boot/autoload.php.sNSClassName:");
-    $arClass = explode("\\",$sNSClassName);
-    $sCompClassName = end($arClass);
-    $sCompClassName = str_replace("Component","",$sCompClassName);
-    $sClassName = strtolower($sCompClassName);
-    $sClassName = "$sClassName.php";
-    $sCompClassName = "component_$sClassName";
-    if(stream_resolve_include_path($sCompClassName))
-        include_once $sCompClassName;
-    elseif(stream_resolve_include_path($sClassName))
-        include_once $sClassName;
+    $arPieces = explode("\\",$sNSClassName);
+    $iPieces = count($arPieces);
+    $sTypeof = isset($arPieces[$iPieces-2])?$arPieces[$iPieces-2]:"";
+    if($sTypeof)
+    {
+        $sTypeof = strtolower($sTypeof);
+        $sTypeof = substr($sTypeof,0,-1);
+    } 
+    //bug($sTypeof,"typeof");
+    $sClassOriginal = end($arPieces);;
+    $sClassOrigLower = strtolower($sClassOriginal);
+    $sFileUntyped = str_replace($sTypeof,"",$sClassOrigLower);
+    $sFileUntyped = "$sFileUntyped.php";
+    $sFileTyped = "$sTypeof"."_"."$sFileUntyped";
+    //bug("sFileUntyped:$sFileUntyped,sFileTyped:$sFileTyped");
+    if(stream_resolve_include_path($sFileTyped))
+        include_once $sFileTyped;
+    elseif(stream_resolve_include_path($sFileUntyped))
+        include_once $sFileUntyped;
+    elseif(stream_resolve_include_path($sClassOriginal))
+        include_once $sClassOriginal;
 });//spl_autoload_register
