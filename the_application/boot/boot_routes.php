@@ -1,5 +1,5 @@
 <?php
-//pr("boot_routes.php 1.0.0");
-use \TheApplication\Components\ComponentRouter;
+//pr("boot_routes.php 1.0.1");
+use \TheApplication\Components\ComponentRouter as R;
 
-ComponentRouter::add("/view/","Homes","get_pdf");
+R::add("/view/","Homes","get_pdf");
