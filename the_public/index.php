@@ -30,6 +30,13 @@ $arPaths = [
     //VENDOR
     "$sPathProject/the_vendor",//tiene el autoload de composer
     ];
+foreach($arPaths as $i=>$sPaths)
+    if($i>0)
+    {
+        $sPathFix = realpath($sPaths);
+        $arPaths[$i] = $sPathFix;
+    }
+//var_dump($arPaths);
 $sPathInclude = implode(PATH_SEPARATOR,$arPaths);
 set_include_path($sPathInclude);
 

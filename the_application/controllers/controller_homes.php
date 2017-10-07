@@ -11,6 +11,7 @@ class ControllerHomes
     public function index()
     {
         $oComp = new \TheApplication\Components\ComponentScheduler();
+        $oComp->pdf();
         include("views/homes/view_index.php");
     }
     
