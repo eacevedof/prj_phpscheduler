@@ -21,6 +21,7 @@ class ComponentTopdf
     
     public function __construct($arData)
     {
+        //bugif();die;
         //pr($arData);die;
         $arTmp = array_values($arData["employees"]);
         sort($arTmp,SORT_STRING);

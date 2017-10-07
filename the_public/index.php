@@ -28,7 +28,8 @@ $arPaths = [
     "$sPathProject/the_application/views/elements",
     "$sPathProject/the_application/views/reactjs",
     //VENDOR
-    "$sPathProject/the_vendor",//tiene el autoload de composer
+//    "$sPathProject/the_vendor",//tiene el autoload de composer
+//    "$sPathProject/the_vendor/fpdf", se cargara 
     ];
 foreach($arPaths as $i=>$sPaths)
     if($i>0)
@@ -40,7 +41,7 @@ foreach($arPaths as $i=>$sPaths)
 $sPathInclude = implode(PATH_SEPARATOR,$arPaths);
 set_include_path($sPathInclude);
 
-require_once "the_vendor/autoload.php";//atuload para composer
+require_once "the_vendor/bootstrap.php";//atuload para composer
 require_once "boot/bootstrap.php";//the_application/boot/bootsrap.php
 
 use TheApplication\Components\ComponentRouter;

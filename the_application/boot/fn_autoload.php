@@ -14,12 +14,17 @@ spl_autoload_register(function($sNSClassName)
         $sTypeof = substr($sTypeof,0,-1);
     } 
     //bug($sTypeof,"typeof");
-    $sClassOriginal = end($arPieces);;
+    $sClassOriginal = end($arPieces);
     $sClassOrigLower = strtolower($sClassOriginal);
+    
     $sFileUntyped = str_replace($sTypeof,"",$sClassOrigLower);
     $sFileUntyped = "$sFileUntyped.php";
+    $sFileTyped = $sFileUntyped;
     $sFileTyped = "$sTypeof"."_"."$sFileUntyped";
-    //bug("sFileUntyped:$sFileUntyped,sFileTyped:$sFileTyped");
+    
+    //para que la busque al final necesito la extension
+    $sClassOriginal.=".php";
+    //bug("sFileUntyped:$sFileUntyped,sFileTyped:$sFileTyped,sClassOriginal:$sClassOriginal");
     if(stream_resolve_include_path($sFileTyped))
         include_once $sFileTyped;
     elseif(stream_resolve_include_path($sFileUntyped))
