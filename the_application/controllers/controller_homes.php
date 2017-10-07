@@ -10,7 +10,7 @@ class ControllerHomes
 
     public function index()
     {
-        $oComp = new TheApplication\Components\ComponentScheduler();
+        $oComp = new \TheApplication\Components\ComponentScheduler();
         include("views/homes/view_index.php");
     }
     
