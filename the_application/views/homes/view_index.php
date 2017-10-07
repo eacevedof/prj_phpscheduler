@@ -5,7 +5,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+$oComp = new TheApplication\Components\ComponentScheduler();
+$oComp->pdf();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Job Scheduler</title>
     <meta name="description" content="Job Scheduler">
+<?php
+include("elem_analytics.php");
+?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>

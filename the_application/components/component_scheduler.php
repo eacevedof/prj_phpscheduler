@@ -8,7 +8,7 @@
  * @date 19-09-2017 04:56 SPAIN
  * @observations
  */
-namespace TheFramework\Components;
+namespace TheApplication\Components;
 
 use TheFramework\Components\ComponentTopdf;
 //use TheFramework\Helpers\HelperLabel;
@@ -30,7 +30,7 @@ class ComponentScheduler
     public function __construct() 
     {
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
-        $this->arConfig = ["pathroot"=>$_SERVER["DOCUMENT_ROOT"]];
+        $this->arConfig = ["pathroot"=>TFW_PATH_PROJECTDS];
         $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];//mi1030,om12,day12
         $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"
             ,"dayana"=>"Dayana","milenka"=>"Milenka","omayra"=>"Omayra"];

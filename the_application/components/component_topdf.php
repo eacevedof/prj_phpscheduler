@@ -9,7 +9,7 @@
  * @observations
  */
 
-namespace TheFramework\Components;
+namespace TheApplication\Components;
 
 use FPDF;
 
