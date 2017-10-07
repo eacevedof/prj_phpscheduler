@@ -41,7 +41,7 @@ $arRun = ComponentRouter::run();
 
 if($arRun)
 {
-    bug($sPathPublic,"pathpublic");
+    //bug($sPathPublic,"pathpublic");
     $oTfwController = new $arRun["controller"]();
     if(method_exists($oTfwController,$arRun["method"]))
         $oTfwController->{$arRun["method"]}();

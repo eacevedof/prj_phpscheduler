@@ -31,7 +31,8 @@ class ComponentScheduler
     {
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
         $this->arConfig = ["pathroot"=>TFW_PATH_PROJECTDS];
-        $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/schedule.json","data"=>[]];//mi1030,om12,day12
+        $this->arJson = ["path"=>"{$this->arConfig["pathroot"]}/the_application/models/schedule.json"
+                        ,"data"=>[]];//mi1030,om12,day12
         $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"
             ,"dayana"=>"Dayana","milenka"=>"Milenka","omayra"=>"Omayra"];
         asort($this->arEmployees);
