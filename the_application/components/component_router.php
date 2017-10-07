@@ -22,5 +22,9 @@ class ComponentRouter
         bug("componentrouter");
     }
    
+    public static function run()
+    {
+        bug("Router.Run");
+    }
    
 }//ComponentRouter

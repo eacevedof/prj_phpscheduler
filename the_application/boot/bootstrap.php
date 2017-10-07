@@ -1,8 +1,4 @@
 <?php
-//the_application/boot/autoload.php
-require_once "autoload.php";
-
-use TheApplication\Components\ComponentRouter;
-
-$oComp = new ComponentRouter();
-bug($oComp);
+//the_application/boot/fn_autoload.php
+require_once "fn_autoload.php";
+require_once "boot_routes.php";

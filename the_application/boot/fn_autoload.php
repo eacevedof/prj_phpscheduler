@@ -4,7 +4,7 @@ pr("boot/autoload.php");
 //autoload.php 1.0.0
 spl_autoload_register(function($sNSClassName)
 {
-    bug($sNSClassName,"boot/autoload.php.sNSClassName:");
+    //bug($sNSClassName,"boot/autoload.php.sNSClassName:");
     $arClass = explode("\\",$sNSClassName);
     $sCompClassName = end($arClass);
     $sCompClassName = str_replace("Component","",$sCompClassName);
