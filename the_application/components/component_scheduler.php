@@ -16,6 +16,7 @@ use TheFramework\Helpers\HelperInputHidden;
 use TheFramework\Helpers\HelperForm;
 use TheFramework\Helpers\HelperSelect;
 use TheFramework\Helpers\HelperButtonBasic;
+use TheApplication\Models\ModelSchedule;
 
 class ComponentScheduler 
 {
@@ -29,6 +30,7 @@ class ComponentScheduler
     
     public function __construct() 
     {
+        $oM = new ModelSchedule();
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
         $this->arConfig = ["pathroot"=>TFW_PATH_PROJECTDS];
         $this->arJson = ["path"=>TFW_PATH_APPLICATIONDS."models/json/schedule.json"

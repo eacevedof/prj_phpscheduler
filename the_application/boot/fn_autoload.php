@@ -28,7 +28,7 @@ spl_autoload_register(function($sNSClassName)
     $arFiles["originalfile"] = "$sClassOrigLower.php";
     
     $sFileUntyped = str_replace($sTypeof,"",$sClassOrigLower);
-    $sSubfolder = $sFileUntyped;
+    $sSubfolder = (isset($_POST["tfw_controller"])?strtolower($_POST["tfw_controller"]):$sFileUntyped);
     
     $sFileUntyped = "$sFileUntyped.php";
     $arFiles["nonprefix"] = $sFileUntyped;

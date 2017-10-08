@@ -50,7 +50,10 @@ $arRun = ComponentRouter::run();
 if($arRun)
 {
     //bug($sPathPublic,"pathpublic");
-    $oTfwController = new $arRun["controller"]();
+    $_POST["tfw_controller"] = $arRun["controller"];
+    $_POST["tfw_method"] = $arRun["method"];
+    
+    $oTfwController = new $arRun["nscontroller"]();
     if(method_exists($oTfwController,$arRun["method"]))
         $oTfwController->{$arRun["method"]}();
     else

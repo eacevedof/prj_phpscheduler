@@ -27,7 +27,7 @@ class ComponentRouter
     public static function add($sUrl="/",$sController="Homes",$sMethod="index")
     {
         $sNSClass = "\TheApplication\Controllers\\Controller$sController";
-        self::$arUrls[]=["url"=>$sUrl,"controller"=>$sNSClass,"method"=>$sMethod];
+        self::$arUrls[]=["url"=>$sUrl,"controller"=>$sController,"nscontroller"=>$sNSClass,"method"=>$sMethod];
     }
    
     public static function run()

@@ -32,7 +32,6 @@ class ControllerHomes extends TheApplicationController
     public function index()
     {
         $oCompSched = new ComponentScheduler();
-        $oCompSched->pdf();
         include("views/homes/view_index.php");
     }
 }//ControllerHomes
