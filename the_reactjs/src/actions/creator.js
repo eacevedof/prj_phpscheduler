@@ -3,24 +3,27 @@ import fnAxios from "axios"
 console.log("load 2: actionCreators.js")
 console.log("ACTIONCREATORS.fnAxios: ",fnAxios)
 
-const fnAcAddToCart = oProduct => {
-    //aqui se podría llamar a un servidor remoto
-    console.log("ACTIONCREATORS.fnAcAddToCart return oAction+oProduct")
-    let oAction = {
-        type: "ADD_TO_CART",
-        product: oProduct
-    }
-    return oAction
-}//fnAcAddToCart
-
-const fnAcRemoveFromCart = oProduct => {
-    console.log("ACTIONCREATORS.fnAcRemoveFromCart return oAction+oProduct")
-    let oAction = {
-        type: "REMOVE_FROM_CART",
-        product: oProduct
-    }    
-    return oAction
-}//acRemoveFromCart
+const Cart = {
+    
+    add : oProduct => {
+        //aqui se podría llamar a un servidor remoto
+        console.log("ACTIONCREATORS.Cart.add return oAction+oProduct")
+        let oAction = {
+            type: "ADD_TO_CART",
+            product: oProduct
+        }
+        return oAction
+    },//fnAcAddToCart
+    
+    remove : oProduct => {
+        console.log("ACTIONCREATORS.fnAcRemoveFromCart return oAction+oProduct")
+        let oAction = {
+            type: "REMOVE_FROM_CART",
+            product: oProduct
+        }    
+        return oAction
+    },
+}//Cart
 
 //https://youtu.be/dRlD0YqU6w4?t=517 configuracion de esta funcion
 const fnAcLoadProducts = ()=>{
@@ -44,4 +47,4 @@ const fnAcLoadProducts = ()=>{
 }//fnAcLoadProducts
 
 //publico estas dos funciones
-export {fnAcAddToCart, fnAcRemoveFromCart, fnAcLoadProducts}
+export {fnAcLoadProducts,Cart}
