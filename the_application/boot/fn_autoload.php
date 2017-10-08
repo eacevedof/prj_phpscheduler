@@ -1,5 +1,5 @@
 <?php
-//<prj>/the_application/boot/fn_autoload.php 1.0.3
+//<prj>/the_application/boot/fn_autoload.php 1.0.4
 spl_autoload_register(function($sNSClassName)
 {
     //bug($sNSClassName,"boot/autoload.php.sNSClassName:");
@@ -40,6 +40,7 @@ spl_autoload_register(function($sNSClassName)
         {
             $included = include_once $sFile;
             //pr("included:$included,file:$sFile");
+            return $included;
         }
 
 });//spl_autoload_register
