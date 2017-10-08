@@ -2,15 +2,16 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @version 1.19.2
- * @name TheFrameworkModel
- * @file theframework_model.php 
- * @date 22-04-2017 08:36 (SPAIN)
- * @observations: core library.
- *  load:18
- * @requires component_query.php
+ * @name TheFramework\Main\TheFrameworkModel
+ * @file theframework_model.php
+ * @version 1.0.0
+ * @date 08-10-2017 (SPAIN)
+ * @observations:
+ * @requires:
  */
-import_component("query");
+namespace TheFramework\Main;
+
+use TheFramework\Components\ComponentFile;
 
 class TheFrameworkModel extends TheFramework
 {
@@ -150,38 +151,38 @@ class TheFrameworkModel extends TheFramework
     {
         //carga la información del navegador. isConsoleCalled, sClientBrowser y oLog,isPermaLink
         parent::__construct();        
-        $this->oDB = self::$arDbs[$iDb];
-        //bug($this->oDB);die;
-        if($table_name!==NULL) $this->_table_name = $table_name;
-        $this->_table_name_lang = $this->_table_name."_lang";
-        //Si se va a mostrar un listado
-        //si se va a escribir. Update, Insert, Delete
-        $this->oQuery = new ComponentQuery($table_name);
-        $this->oQuery->set_db_type($this->oDB->get_type());
-        
-        //Para que haga un select *
-        //$this->sSELECTfields = "*";  En cada funcion select se renombra
-        $this->arHierarchyViews["seller"] = array("view"=>"vbase_hieruser_seller","fieldname"=>"id_seller");//id_user,id_seller
-        $this->arHierarchyViews["customer"] = array("view"=>"vbase_hieruser_customer","fieldname"=>"id_customer");//id_user,id_customer
-        $this->arHierarchyViews["userchild"] = array("view"=>"vbase_hieruser_userchild","fieldname"=>"id_user_child");//id_user, id_user_child
-        if($this->is_db_mysql())
-        {
-            $this->arHierarchyViews["seller"] = array("view"=>"get_vbase_hieruser_seller","fieldname"=>"id_seller");//id_user,id_seller
-            $this->arHierarchyViews["customer"] = array("view"=>"get_vbase_hieruser_customer","fieldname"=>"id_customer");//id_user,id_customer
-            $this->arHierarchyViews["userchild"] = array("view"=>"get_vbase_hieruser_userchild","fieldname"=>"id_user_child");//id_user, id_user_child            
-        }
-        
-        if(isset($_SESSION["tfw_user_identificator"])) $this->iSessionUserId = $_SESSION["tfw_user_identificator"];
-        if(isset($_SESSION["tfw_user_idlanguage"])) $this->_id_language = $_SESSION["tfw_user_idlanguage"];
-        $this->_path_log_insert = TFW_PATH_FOLDER_LOGDS."queries/insert";
-        $this->_path_log_select = TFW_PATH_FOLDER_LOGDS."queries/select";
-        $this->_path_log_update = TFW_PATH_FOLDER_LOGDS."queries/update";
-        $this->_path_log_delete = TFW_PATH_FOLDER_LOGDS."queries/delete";
-        
-        //bug($this->isFieldsDefSession,"tfwmodel");
-        //antes de llamar a fields_definition se necesita definir los path_logs
-        //$this->arFieldsDefinition se carga con su load desde base de datos
-        $this->load_fields_definition();
+//        $this->oDB = self::$arDbs[$iDb];
+//        //bug($this->oDB);die;
+//        if($table_name!==NULL) $this->_table_name = $table_name;
+//        $this->_table_name_lang = $this->_table_name."_lang";
+//        //Si se va a mostrar un listado
+//        //si se va a escribir. Update, Insert, Delete
+//        $this->oQuery = new ComponentQuery($table_name);
+//        $this->oQuery->set_db_type($this->oDB->get_type());
+//        
+//        //Para que haga un select *
+//        //$this->sSELECTfields = "*";  En cada funcion select se renombra
+//        $this->arHierarchyViews["seller"] = array("view"=>"vbase_hieruser_seller","fieldname"=>"id_seller");//id_user,id_seller
+//        $this->arHierarchyViews["customer"] = array("view"=>"vbase_hieruser_customer","fieldname"=>"id_customer");//id_user,id_customer
+//        $this->arHierarchyViews["userchild"] = array("view"=>"vbase_hieruser_userchild","fieldname"=>"id_user_child");//id_user, id_user_child
+//        if($this->is_db_mysql())
+//        {
+//            $this->arHierarchyViews["seller"] = array("view"=>"get_vbase_hieruser_seller","fieldname"=>"id_seller");//id_user,id_seller
+//            $this->arHierarchyViews["customer"] = array("view"=>"get_vbase_hieruser_customer","fieldname"=>"id_customer");//id_user,id_customer
+//            $this->arHierarchyViews["userchild"] = array("view"=>"get_vbase_hieruser_userchild","fieldname"=>"id_user_child");//id_user, id_user_child            
+//        }
+//        
+//        if(isset($_SESSION["tfw_user_identificator"])) $this->iSessionUserId = $_SESSION["tfw_user_identificator"];
+//        if(isset($_SESSION["tfw_user_idlanguage"])) $this->_id_language = $_SESSION["tfw_user_idlanguage"];
+//        $this->_path_log_insert = TFW_PATH_FOLDER_LOGDS."queries/insert";
+//        $this->_path_log_select = TFW_PATH_FOLDER_LOGDS."queries/select";
+//        $this->_path_log_update = TFW_PATH_FOLDER_LOGDS."queries/update";
+//        $this->_path_log_delete = TFW_PATH_FOLDER_LOGDS."queries/delete";
+//        
+//        //bug($this->isFieldsDefSession,"tfwmodel");
+//        //antes de llamar a fields_definition se necesita definir los path_logs
+//        //$this->arFieldsDefinition se carga con su load desde base de datos
+//        $this->load_fields_definition();
     }//__construct
     
     private function load_fields_definition()
