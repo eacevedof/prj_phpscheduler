@@ -16,7 +16,9 @@ use TheFramework\Helpers\HelperInputHidden;
 use TheFramework\Helpers\HelperForm;
 use TheFramework\Helpers\HelperSelect;
 use TheFramework\Helpers\HelperButtonBasic;
+
 use TheApplication\Models\ModelSchedule;
+use TheApplication\Models\ModelEmployee;
 
 class ComponentScheduler 
 {
@@ -25,25 +27,20 @@ class ComponentScheduler
     private $iEnd;
     private $arEmployees;
     private $arHours;
-    private $arConfig;
     private $arJson;
     
     public function __construct() 
     {
-        //$oModelSchedule = new ModelSchedule();
-        //$oModelSchedule->load();
-        //pr($oModelSchedule->get_data());
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
-        $this->arConfig = ["pathroot"=>TFW_PATH_PROJECTDS];
-        $this->arJson = ["path"=>TFW_PATH_APPLICATIONDS."models/json/schedule.json"
-                        ,"data"=>[]];//mi1030,om12,day12
-        $this->arEmployees = ["rosanna"=>"Rosanna","jesus"=>"Jesus","caty"=>"Caty","joel"=>"Joel","jose"=>"Jose"
-            ,"dayana"=>"Dayana","milenka"=>"Milenka","omayra"=>"Omayra"];
-        asort($this->arEmployees);
+        $this->arJson = ["data"=>[]];//mi1030,om12,day12
+        
+        $oEmployee = new ModelEmployee();
+        $oEmployee->load();
+        $this->arEmployees = $oEmployee->get_keyname();
+
         $this->arHours = [""=>"...hour","1000"=>"10:00","1030"=>"10:30","1130"=>"11:30",
             "1200"=>"12:00","1230"=>"12:30","1300"=>"13:00","off"=>"OFF"];
         $this->json_load();
-        //pr($this->arJson["data"]);
     }
     
     private function json_load()
@@ -111,8 +108,6 @@ class ComponentScheduler
         
         $this->arJson["data"] = $arTmp;
     }//json_write
-    
-
         
     private function in_string($arChars=[],$sString)
     {
