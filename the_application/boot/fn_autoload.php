@@ -1,5 +1,5 @@
 <?php
-//<prj>/the_application/boot/fn_autoload.php 1.0.4
+//<prj>/the_application/boot/fn_autoload.php 1.1.0
 spl_autoload_register(function($sNSClassName)
 {
     //bug($sNSClassName,"boot/autoload.php.sNSClassName:");
@@ -28,18 +28,26 @@ spl_autoload_register(function($sNSClassName)
     $arFiles["originalfile"] = "$sClassOrigLower.php";
     
     $sFileUntyped = str_replace($sTypeof,"",$sClassOrigLower);
+    $sSubfolder = $sFileUntyped;
+    
     $sFileUntyped = "$sFileUntyped.php";
     $arFiles["nonprefix"] = $sFileUntyped;
     $sFileTyped = $sFileUntyped;
     $sFileTyped = "$sTypeof"."_"."$sFileUntyped";
     $arFiles["withprefix"] = $sFileTyped;
     
+    //wf:with folder
+    $arFiles["wf_originalclass"] = "$sSubfolder/{$arFiles["originalclass"]}";
+    $arFiles["wf_originalfile"] = "$sSubfolder/{$arFiles["originalfile"]}";
+    $arFiles["wf_nonprefix"] = "$sSubfolder/{$arFiles["nonprefix"]}";
+    $arFiles["wf_withprefix"] = "$sSubfolder/{$arFiles["withprefix"]}";
+    
     //pr($arFiles,"FILES FOR:$sNSClassName");
     foreach($arFiles as $sType=>$sFile)
         if(stream_resolve_include_path($sFile))
         {
             $included = include_once $sFile;
-            //pr("included:$included,file:$sFile");
+            bug("included:$included,file:$sFile");
             return $included;
         }
 
