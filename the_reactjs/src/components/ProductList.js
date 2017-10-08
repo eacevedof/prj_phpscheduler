@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Glyphicon } from "react-bootstrap";
-import { fnAcAddToCart, fnAcLoadProducts,Cart } from "../actions/creator"
+import { AcCart } from "../actions/ac_cart"
+import { AcProduct } from "../actions/ac_product"
 import { connect } from "react-redux"
 
 console.log("PRDUCTLIST")
@@ -55,12 +56,12 @@ const fnMapDispatchToProps = fnDispatch => {
     let oDispatch = {
         fnLoadProducts : arProducts => {
             console.log("PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnLoadProducts")
-            let oAction = fnAcLoadProducts(arProducts)
+            let oAction = AcProduct.load(arProducts)
             fnDispatch(oAction)
         },
         fnAddToCart : oProduct => {
             console.log("PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnAddToCart")
-            let oAction = Cart.add(oProduct)
+            let oAction = AcCart.add(oProduct)
             fnDispatch(oAction)
         }
     }

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import oStore from "./store/store";
 import {Provider} from "react-redux"
-import {fnAcLoadProducts} from "./actions/creator"
+import {AcProduct} from "./actions/ac_product"
 import "./index.css";
 
 console.log("INDEX.Rreact: ",React)
@@ -11,9 +11,9 @@ console.log("INDEX.ReactDOM: ",ReactDOM)
 console.log("INDEX.App: ",App)
 console.log("INDEX.oStore: ",oStore)
 console.log("INDEX.Provider: ",Provider)
-console.log("INDEX.fnAcLoadProducts: ",fnAcLoadProducts)
+console.log("INDEX.fnAcLoadProducts: ",AcProduct.load)
 
-const fnProdDispatch = fnAcLoadProducts()
+const fnProdDispatch = AcProduct.load()
 //fnProdDispatch: fnDispatch => {..}
 console.log("INDEX.fnProdDispatch: ",fnProdDispatch)
 oStore.dispatch(fnProdDispatch)

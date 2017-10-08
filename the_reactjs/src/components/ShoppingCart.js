@@ -1,6 +1,6 @@
 import React from "react";
 import { Panel, Table, Button, Glyphicon } from "react-bootstrap"
-import {Cart} from "../actions/creator"
+import {AcCart} from "../actions/ac_cart"
 import {connect} from "react-redux"
 
 console.log("SHOPPINGCART")
@@ -57,7 +57,7 @@ const fnMapDispatchToProps = fnDispatch => {
     let oDispatch = {
         fnRemoveFromCart : oProduct => {
             console.log("SHOPPINGCART.fnMapDispatchToProps.oDispatch.fnRemoveFromCart")
-            let oAction = Cart.remove(oProduct)
+            let oAction = AcCart.remove(oProduct)
             fnDispatch(oAction)
         }//removeFromCart 
     }//oDispatch
