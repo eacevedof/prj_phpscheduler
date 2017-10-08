@@ -11,9 +11,8 @@ const oStyles = {
     }
 }//oStyles
 
-
-const fnRenderShoppingCart = ({arCart,fnRemoveFromCart})=>{
-    console.log("SHOPPINGCART.fnRenderShoppingCart")
+const get_shoppingcart = ({arCart,fnRemoveFromCart})=>{
+    console.log("SHOPPINGCART.get_shoppingcart")
     return (
         <Panel header="Shopping Cart">
             <Table fill>
@@ -41,27 +40,27 @@ const fnRenderShoppingCart = ({arCart,fnRemoveFromCart})=>{
         </Panel>
     )//return
     
-}//fnRenderShoppingCart
+}//get_shoppingcart
 
 
-const fnMapStateToProps = oState => {
-    console.log("SHOPPINGCART.fnMapStateToProps return oStateNew con arCart")
+const get_cartlist = oState => {
+    console.log("SHOPPINGCART.get_cartlist return oStateNew con arCart")
     let oStateNew = {
         arCart: oState.arCart
     } 
     return oStateNew 
-}//fnMapStateToProps
+}//get_cartlist
 
-const fnMapDispatchToProps = fnDispatch => {
-    console.log("SHOPPINGCART.fnMapDispatchToProps return oDispatch")
+const get_dispatchers = fnDispatch => {
+    console.log("SHOPPINGCART.get_dispatchers return oDispatch")
     let oDispatch = {
         fnRemoveFromCart : oProduct => {
-            console.log("SHOPPINGCART.fnMapDispatchToProps.oDispatch.fnRemoveFromCart")
+            console.log("SHOPPINGCART.get_dispatchers.oDispatch.fnRemoveFromCart")
             let oAction = AcCart.remove(oProduct)
             fnDispatch(oAction)
         }//removeFromCart 
     }//oDispatch
     return oDispatch 
-}//fnMapDispatchToProps
+}//get_dispatchers
 
-export default connect(fnMapStateToProps,fnMapDispatchToProps)(fnRenderShoppingCart);
+export default connect(get_cartlist,get_dispatchers)(get_shoppingcart);

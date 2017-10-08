@@ -19,10 +19,11 @@ const oStyles = {
     }
 }//oStyles
 
-const fnProductList = ({ arProducts, fnAddToCart }) => {
-    console.log("PRODUCTLIST.fnProductList.render()")
-    console.log("PRODUCTLIST.fnProductList: arProducts",arProducts)
-    console.log("PRODUCTLIST.fnProductList: fnAddToCart",fnAddToCart)
+//get_products,get_dispatchers
+const get_productlist = ({ arProducts, fnAddToCart }) => {
+    console.log("PRODUCTLIST.get_productlist.render()")
+    console.log("PRODUCTLIST.get_productlist: arProducts",arProducts)
+    console.log("PRODUCTLIST.get_productlist: fnAddToCart",fnAddToCart)
     
     return (
         <div style={oStyles.products}>
@@ -41,31 +42,31 @@ const fnProductList = ({ arProducts, fnAddToCart }) => {
             }
         </div>
     )//render
-}//fnProductList
+}//get_productlist
 
-const fnMapStateToProps = (oState)=>{
-    console.log("PRODUCTLIST.fnMapStateToProps return oStateNew con arProducts")
+const get_products = (oState)=>{
+    console.log("PRODUCTLIST.get_products return oStateNew con arProducts")
     let oStateNew = {
         arProducts : oState.arProducts
     }
     return oStateNew
-}//fnMapStateToProps
+}//get_products
 
-const fnMapDispatchToProps = fnDispatch => {
-    console.log("PRODUCTLIST.fnMapDispatchToProps devuelve oDispatch")
+const get_dispatchers = fnDispatch => {
+    console.log("PRODUCTLIST.get_dispatchers devuelve oDispatch")
     let oDispatch = {
         fnLoadProducts : arProducts => {
-            console.log("PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnLoadProducts")
+            console.log("PRODUCTLIST.get_dispatchers.oDispatch.fnLoadProducts")
             let oAction = AcProduct.load(arProducts)
             fnDispatch(oAction)
         },
         fnAddToCart : oProduct => {
-            console.log("PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnAddToCart")
+            console.log("PRODUCTLIST.get_dispatchers.oDispatch.fnAddToCart")
             let oAction = AcCart.add(oProduct)
             fnDispatch(oAction)
         }
     }
     return oDispatch
-}//fnMapDispatchToProps
+}//get_dispatchers
 
-export default connect(fnMapStateToProps,fnMapDispatchToProps)(fnProductList);
+export default connect(get_products,get_dispatchers)(get_productlist);
