@@ -26,7 +26,7 @@ include("elem_analytics.php");
         <div class="col-lg-12">
             <br/>
 <?php
-$oComp->run();
+$oCompSched->run();
 ?>
         </div>
     </div>
