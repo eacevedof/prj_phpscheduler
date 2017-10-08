@@ -2,9 +2,9 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @name ComponentScheduler
+ * @name TheApplication\Components\ComponentScheduler
  * @file component_scheduler.php
- * @version 1.0.0
+ * @version 1.0.1
  * @date 19-09-2017 04:56 SPAIN
  * @observations
  */
@@ -203,7 +203,7 @@ class ComponentScheduler
         . "</form>"
         . "</td>"
         . "<td align=\"left\">"
-        . "<form method=\"post\" name=\"frmPdf\">"
+        . "<form method=\"post\" name=\"frmPdf\" action=\"/pdf/\">"
         . "{$oHidPdf->get_html()} <br/>{$oButPdf->get_html()}"
         . "</form>"
         . "</td>";
@@ -230,33 +230,35 @@ class ComponentScheduler
         return "";
     }
     
-    private function get_tdform($iDate,$sDay="")
+    private function get_tdform($iDay,$sDay="")
     {
-        $arDate = $this->get_ardate($iDate);
+        $arDate = $this->get_ardate($iDay);
         
         $oForm = new HelperForm();
-        $oForm->set_id("frmDay[$iDate]");
+        $oForm->set_id("frmDay[$iDay]");
         $sHtml = "";
         $sHtml .= $oForm->get_opentag();
         
-        $oButton = new HelperButtonBasic("but$iDate");
+        $oButton = new HelperButtonBasic("but$iDay");
         $oButton->set_type("submit");
         $oButton->set_innerhtml("Save $sDay");
         
         $oHid = new HelperInputHidden();
-        $oHid->set_id("hidDay$iDate");
+        $oHid->set_id("hidDay$iDay");
         $oHid->set_name("hidDay");
-        $oHid->set_value($iDate);
+        $oHid->set_value($iDay);
         
         $sHtml .= $oHid->get_html();
             
         $iEmp = 0;
+        //bug($iDay,"autofocus");bugp("hidDay");
         foreach($this->arEmployees as $kEmpl=>$sEmpl)
         {
             $sHour = $this->get_hour($arDate["y"],$arDate["m"],$arDate["d"],$kEmpl);
-            //pr($sHour,"hour");
-            $oSelHour = new HelperSelect($this->arHours,"selHour$iDate","selHour[$kEmpl]");
+            $oSelHour = new HelperSelect($this->arHours,"selHour$iDay","selHour[$kEmpl]");
             $oSelHour->set_value_to_select($sHour);
+            if($iDay==(isset($_POST["hidDay"])?$_POST["hidDay"]:NULL))
+                $oSelHour->add_extras("autofocus","autofocus");
             if($iEmp%4==0) $sHtml.="<tr>";
             $sHtml .= "<td>$sEmpl</td><td>{$oSelHour->get_html()}</td>";
             if($iEmp%4==(4-1)) $sHtml.="</tr>";

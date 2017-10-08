@@ -12,17 +12,26 @@
 namespace TheApplication\Controllers;
 
 use TheApplication\Controllers\TheApplicationController;
+use TheApplication\Components\ComponentScheduler;
 
 class ControllerHomes extends TheApplicationController
 {
     public function __construct()
     {
-
+        ;
     }
 
+    //pdf/
+    public function get_pdf()
+    {
+        $oCompSched = new ComponentScheduler();
+        $oCompSched->pdf();
+    }
+    
+    //
     public function index()
     {
-        $oCompSched = new \TheApplication\Components\ComponentScheduler();
+        $oCompSched = new ComponentScheduler();
         $oCompSched->pdf();
         include("views/homes/view_index.php");
     }
