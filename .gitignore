@@ -2,7 +2,7 @@
 # -- logs
 logs/**
 php.ini
-/the_application/models/json/**
+/the_application/models/json/*
 
 # -- Composer -----------------------------------------
 composer.phar
