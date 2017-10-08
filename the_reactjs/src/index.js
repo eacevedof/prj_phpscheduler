@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import "./index.css";
-//store tiene 3 metodos subscribe(fn),dispatch(oAction),getState(), el store es un observador??
-import oStore from "./store";
+import oStore from "./store/store";
 import {Provider} from "react-redux"
 import {fnAcLoadProducts} from "./actions/creator"
+import "./index.css";
 
 console.log("INDEX.Rreact: ",React)
 console.log("INDEX.ReactDOM: ",ReactDOM)
