@@ -4,7 +4,7 @@
  * @link www.eduardoaf.com
  * @name TheApplication\Components\ComponentScheduler
  * @file component_scheduler.php
- * @version 1.0.1
+ * @version 1.0.2
  * @date 19-09-2017 04:56 SPAIN
  * @observations
  */
@@ -48,7 +48,9 @@ class ComponentScheduler
     
     private function json_load()
     {
-        $this->arJson["data"] = $this->json_read();
+        $oSchedule = new ModelSchedule();
+        $oSchedule->load();
+        $this->arJson["data"] = $oSchedule->get_data();
     }
     
     private function get_formatted_post()
@@ -98,23 +100,19 @@ class ComponentScheduler
     
     private function json_write($arPiece,$isAdd=1)
     {
-        $sPath = $this->arJson["path"];
-        $arTmp = $this->arJson["data"];
+        $oSchedule = new ModelSchedule();
+        $oSchedule->load();
+        
+        $arTmp = $oSchedule->get_data();
         
         if($isAdd)
             $this->ar_merge($arTmp,$arPiece);
+        $oSchedule->update($arTmp);
+        
         $this->arJson["data"] = $arTmp;
-        $sJson = json_encode($arTmp);
-        file_put_contents($sPath,$sJson);
     }//json_write
     
-    private function json_read()
-    {
-        $sPath = $this->arJson["path"];
-        $sContent = file_get_contents($sPath);
-        $arJson = json_decode($sContent,TRUE);
-        return $arJson;
-    }//json_read
+
         
     private function in_string($arChars=[],$sString)
     {
