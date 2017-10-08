@@ -30,7 +30,9 @@ class ComponentScheduler
     
     public function __construct() 
     {
-        $oM = new ModelSchedule();
+        //$oModelSchedule = new ModelSchedule();
+        //$oModelSchedule->load();
+        //pr($oModelSchedule->get_data());
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
         $this->arConfig = ["pathroot"=>TFW_PATH_PROJECTDS];
         $this->arJson = ["path"=>TFW_PATH_APPLICATIONDS."models/json/schedule.json"
@@ -205,7 +207,8 @@ class ComponentScheduler
         . "</form>"
         . "</td>"
         . "<td align=\"left\">"
-        . "<form method=\"post\" name=\"frmPdf\" action=\"/pdf/\">"
+            
+        . "<form method=\"post\" name=\"frmPdf\" action=\"/pdf/\" target=\"_blank\"\">"
         . "{$oHidPdf->get_html()} <br/>{$oButPdf->get_html()}"
         . "</form>"
         . "</td>";
