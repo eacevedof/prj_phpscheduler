@@ -21,19 +21,13 @@ class ModelEmployee extends TheApplicationModel
         $this->arData = $arData;
         $this->sPath = TFW_PATH_APPLICATIONDS."models/json/employee.json";
     }
-    
-    public function insert()
-    {}
-    
-    public function update()
-    {}   
-    
-    public function delete()
-    {}
-    
-    public function get_data()
-    {
-        
-    }
 
+    public function get_keyname()
+    {
+        $arData = [];
+        foreach($this->arData as $arEmp)
+            $arData[$arEmp["id"]] = $arEmp["name"];
+        asort($arData);
+        return $arData;
+    }
 }//ModelEmployee

@@ -28,6 +28,15 @@ class TheApplicationModel extends TheFrameworkModel
         $this->arData = $this->json_read($this->sPath);
     }
     
+    public function update($arDataNew=[])
+    {
+        $this->json_write($arDataNew,$this->sPath);
+    }   
+
+    public function delete(){}
+    
+    public function insert(){}
+        
     protected function json_write($arData,$sPath)
     {
         $sJson = json_encode($arData);
@@ -45,5 +54,6 @@ class TheApplicationModel extends TheFrameworkModel
         return [];
     }//json_read  
     
+    public function get_data(){return $this->arData;}
     
 }//TheApplicationModel

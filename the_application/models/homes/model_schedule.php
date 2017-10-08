@@ -22,17 +22,6 @@ class ModelSchedule extends TheApplicationModel
         $this->sPath = TFW_PATH_APPLICATIONDS."models/json/schedule.json";
     }
     
-    public function load()
-    {
-        $this->arData = $this->json_read($this->sPath);
-    }
-    
-    public function insert()
-    {}
-    
-    public function update()
-    {}   
-    
     public function delete()
     {}
     
