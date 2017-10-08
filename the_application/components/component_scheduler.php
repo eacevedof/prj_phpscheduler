@@ -2,9 +2,8 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @name TheApplication\Components\ComponentScheduler
- * @file component_scheduler.php
- * @version 1.0.2
+ * @name TheApplication\Components\ComponentScheduler 
+ * @file component_scheduler.php 1.0.3
  * @date 19-09-2017 04:56 SPAIN
  * @observations
  */
@@ -27,12 +26,12 @@ class ComponentScheduler
     private $iEnd;
     private $arEmployees;
     private $arHours;
-    private $arJson;
+    private $arData;
     
     public function __construct() 
     {
         $this->arMonth = ["y"=>"","m"=>"","name"=>""];
-        $this->arJson = ["data"=>[]];//mi1030,om12,day12
+        $this->arData = [];//mi1030,om12,day12
         
         $oEmployee = new ModelEmployee();
         $oEmployee->load();
@@ -47,7 +46,7 @@ class ComponentScheduler
     {
         $oSchedule = new ModelSchedule();
         $oSchedule->load();
-        $this->arJson["data"] = $oSchedule->get_data();
+        $this->arData = $oSchedule->get_data();
     }
     
     private function get_formatted_post()
@@ -106,7 +105,7 @@ class ComponentScheduler
             $this->ar_merge($arTmp,$arPiece);
         $oSchedule->update($arTmp);
         
-        $this->arJson["data"] = $arTmp;
+        $this->arData = $arTmp;
     }//json_write
         
     private function in_string($arChars=[],$sString)
@@ -206,7 +205,7 @@ class ComponentScheduler
         . "</form>"
         . "</td>";
       
-        if(!isset($this->arJson["data"][$this->arMonth["y"].$this->arMonth["m"]])) 
+        if(!isset($this->arData[$this->arMonth["y"].$this->arMonth["m"]])) 
         {
             $arPiece[$this->arMonth["y"].$this->arMonth["m"]] = [];
             $this->json_write($arPiece);
@@ -217,8 +216,8 @@ class ComponentScheduler
     
     private function get_hour($sYear,$sMonth,$sDay,$sEmp)
     {
-        //bug($this->arJson["data"][$sYear.$sMonth]);die;
-        $arHours = isset($this->arJson["data"][$sYear.$sMonth][$sDay])?$this->arJson["data"][$sYear.$sMonth][$sDay]:[];
+        //bug($this->arData[$sYear.$sMonth]);die;
+        $arHours = isset($this->arData[$sYear.$sMonth][$sDay])?$this->arData[$sYear.$sMonth][$sDay]:[];
         
         foreach($arHours as $sHour=>$arEmp)
         {
@@ -347,7 +346,7 @@ class ComponentScheduler
             $this->iEnd = (int) $this->iEnd;
             $arData["month"]["asked"] = $sMonth;
             $arData["month"]["letters"] = date("F",mktime(0,0,0,$arMonth["m"],"01",$arMonth["y"]))." {$arMonth["y"]}";
-            $arData["data"] = $this->arJson["data"][$sMonth];
+            $arData["data"] = $this->arData[$sMonth];
             $arData["end"] = $this->iEnd;
             $arData["employees"] = $this->arEmployees;
             $arData["hours"] = $this->arHours;
