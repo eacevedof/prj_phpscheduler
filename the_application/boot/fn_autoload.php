@@ -1,34 +1,45 @@
 <?php
-//the_application/fn_autoload
-//autoload.php 1.0.2
-//pr("boot/fn_autoload.php 1.0.1");
+//<prj>/the_application/boot/fn_autoload.php 1.0.3
 spl_autoload_register(function($sNSClassName)
 {
-    bug($sNSClassName,"boot/autoload.php.sNSClassName:");
+    //bug($sNSClassName,"boot/autoload.php.sNSClassName:");
     $arPieces = explode("\\",$sNSClassName);
     $iPieces = count($arPieces);
     $sTypeof = isset($arPieces[$iPieces-2])?$arPieces[$iPieces-2]:"";
+    
+    //El patron seria controllers->controller_x,models->model_x
+    //main -> theframework_x
     if($sTypeof)
     {
         $sTypeof = strtolower($sTypeof);
-        $sTypeof = substr($sTypeof,0,-1);
+        //parche para TheFramework\Main
+        if($sTypeof!=="main")      
+            $sTypeof = substr($sTypeof,0,-1);
+        else
+            $sTypeof="theframework";
     } 
+    
+    $arFiles = [];
+    
     //bug($sTypeof,"typeof");
     $sClassOriginal = end($arPieces);
+    $arFiles["originalclass"] = "$sClassOriginal.php";
     $sClassOrigLower = strtolower($sClassOriginal);
+    $arFiles["originalfile"] = "$sClassOrigLower.php";
     
     $sFileUntyped = str_replace($sTypeof,"",$sClassOrigLower);
     $sFileUntyped = "$sFileUntyped.php";
+    $arFiles["nonprefix"] = $sFileUntyped;
     $sFileTyped = $sFileUntyped;
     $sFileTyped = "$sTypeof"."_"."$sFileUntyped";
+    $arFiles["withprefix"] = $sFileTyped;
     
-    //para que la busque al final necesito la extension
-    $sClassOriginal.=".php";
-    pr("sFileTyped:$sFileTyped,sFileUntyped:$sFileUntyped,sClassOriginal:$sClassOriginal");
-    if(stream_resolve_include_path($sFileTyped))
-        include_once $sFileTyped;
-    elseif(stream_resolve_include_path($sFileUntyped))
-        include_once $sFileUntyped;
-    elseif(stream_resolve_include_path($sClassOriginal))
-        include_once $sClassOriginal;
+    //pr($arFiles,"FILES FOR:$sNSClassName");
+    foreach($arFiles as $sType=>$sFile)
+        if(stream_resolve_include_path($sFile))
+        {
+            $included = include_once $sFile;
+            //pr("included:$included,file:$sFile");
+        }
+
 });//spl_autoload_register
