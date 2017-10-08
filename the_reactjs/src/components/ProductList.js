@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Glyphicon } from "react-bootstrap";
-import { fnAcAddToCart, fnAcLoadProducts } from "../actionCreators"
+import { fnAcAddToCart, fnAcLoadProducts } from "../actions/creator"
 import { connect } from "react-redux"
 
 console.log("PRDUCTLIST")

@@ -1,6 +1,6 @@
 import React from "react";
 import { Panel, Table, Button, Glyphicon } from "react-bootstrap"
-import {fnAcRemoveFromCart} from "../actionCreators"
+import {fnAcRemoveFromCart} from "../actions/creator"
 import {connect} from "react-redux"
 
 console.log("SHOPPINGCART")
