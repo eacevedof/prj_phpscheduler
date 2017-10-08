@@ -4,7 +4,7 @@
 //pr("boot/fn_autoload.php 1.0.1");
 spl_autoload_register(function($sNSClassName)
 {
-    //bug($sNSClassName,"boot/autoload.php.sNSClassName:");
+    bug($sNSClassName,"boot/autoload.php.sNSClassName:");
     $arPieces = explode("\\",$sNSClassName);
     $iPieces = count($arPieces);
     $sTypeof = isset($arPieces[$iPieces-2])?$arPieces[$iPieces-2]:"";
@@ -24,7 +24,7 @@ spl_autoload_register(function($sNSClassName)
     
     //para que la busque al final necesito la extension
     $sClassOriginal.=".php";
-    //bug("sFileUntyped:$sFileUntyped,sFileTyped:$sFileTyped,sClassOriginal:$sClassOriginal");
+    pr("sFileTyped:$sFileTyped,sFileUntyped:$sFileUntyped,sClassOriginal:$sClassOriginal");
     if(stream_resolve_include_path($sFileTyped))
         include_once $sFileTyped;
     elseif(stream_resolve_include_path($sFileUntyped))

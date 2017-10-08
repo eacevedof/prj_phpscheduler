@@ -2,15 +2,17 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @version 2.0.2
- * @name TheFrameworkController
- * @file theframework_controller.php 
- * @date 22-04-2017 11:12 (SPAIN)
- * @observations: core library.
- *  load:21
- * @requires: component_permission.php
+ * @name TheFramework\Main\TheFrameworkController
+ * @file theframework_controller.php
+ * @version 1.0.0
+ * @date 08-10-2017 (SPAIN)
+ * @observations:
+ * @requires:
  */
-import_component("permission");
+namespace TheFramework\Main;
+
+use TheFramework\Main\TheFramework;
+
 class TheFrameworkController extends TheFramework
 { 
     /**

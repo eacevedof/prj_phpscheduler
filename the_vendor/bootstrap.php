@@ -7,6 +7,6 @@ $arPaths[] = get_include_path();
 foreach($arVendors as $sFolder)
     $arPaths[] = realpath(TFW_PATH_VENDORDS.$sFolder);
 
-//var_dump($arPaths);
+var_dump($arPaths);
 $sPathInclude = implode(PATH_SEPARATOR,$arPaths);
 set_include_path($sPathInclude);

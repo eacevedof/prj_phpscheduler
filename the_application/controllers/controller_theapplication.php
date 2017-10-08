@@ -11,7 +11,9 @@
  */
 namespace TheApplication\Controllers;
 
-class TheApplication
+use TheFramework\Main\TheFrameworkController;
+
+class TheApplicationController extends TheFrameworkController
 {
     public function __construct()
     {

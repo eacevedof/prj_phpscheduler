@@ -11,7 +11,9 @@
  */
 namespace TheApplication\Controllers;
 
-class ControllerHomes
+use TheApplication\Controllers\TheApplicationController;
+
+class ControllerHomes extends TheApplicationController
 {
     public function __construct()
     {
