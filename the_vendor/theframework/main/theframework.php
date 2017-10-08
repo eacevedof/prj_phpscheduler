@@ -2,15 +2,17 @@
 /**
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
- * @version 2.18.0
- * @name TheFramework
+ * @name TheFramework\Main\TheFramework
  * @file theframework.php
- * @date 29-04-2017 11:47 (SPAIN)
- * @observations: core library.
- *  load:17
+ * @version 1.0.0
+ * @date 08-10-2017 (SPAIN)
+ * @observations:
  * @requires:
  */
-import_component("uri");
+namespace TheFramework\Main;
+
+use TheFramework\Components\ComponentUri;
+
 class TheFramework
 {
     protected $sCurrentUrl;    
@@ -47,17 +49,17 @@ class TheFramework
     public function __construct()
     {
         
-        if(session_status()==PHP_SESSION_NONE)
-            session_start();
-        //sets clientbrowser, isMobileDevice
-        $this->load_client_device();        
-        if(defined("STDIN"))$this->isConsoleCalled=TRUE;
-        if(defined("TFW_IS_PERMALINK"))$this->isPermaLink = TFW_IS_PERMALINK;
-        if(defined("TFW_DEFAULT_LANGUAGE_ISO")) 
-            $this->sIsoLang = (TFW_DEFAULT_LANGUAGE_ISO!==""?$_GET["tfw_iso_language"]:NULL);
-        //bug($this->sIsoLang,"isolang");
-        $this->sSessionId = $this->get_session_id();
-        //bug($this->isPermaLink,"permalink");
+//        if(session_status()==PHP_SESSION_NONE)
+//            session_start();
+//        //sets clientbrowser, isMobileDevice
+//        $this->load_client_device();        
+//        if(defined("STDIN"))$this->isConsoleCalled=TRUE;
+//        if(defined("TFW_IS_PERMALINK"))$this->isPermaLink = TFW_IS_PERMALINK;
+//        if(defined("TFW_DEFAULT_LANGUAGE_ISO")) 
+//            $this->sIsoLang = (TFW_DEFAULT_LANGUAGE_ISO!==""?$_GET["tfw_iso_language"]:NULL);
+//        //bug($this->sIsoLang,"isolang");
+//        $this->sSessionId = $this->get_session_id();
+//        //bug($this->isPermaLink,"permalink");
     }
 
     public function js_selfclose($fSeconds=0,$sMessage="")
