@@ -1,0 +1,10 @@
+[           
+    {"id":"rosanna","name":"Rosanna","workplace":"cocina"},
+    {"id":"jesus","name":"Jesus","workplace":"cocina,salon"},
+    {"id":"caty","name":"Caty","workplace":"cocina"},
+    {"id":"joel","name":"Joel","workplace":"cocina"},
+    {"id":"jose","name":"Jose","workplace":"cocina"},
+    {"id":"milenka","name":"Milenka","workplace":"salon"},
+    {"id":"dayana","name":"Dayana","workplace":"barra"},
+    {"id":"omayra","name":"Omayra","workplace":"salon"}
+]
