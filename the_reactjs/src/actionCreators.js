@@ -1,6 +1,3 @@
-//actionCreators.js 
-//funciones que se le pasan al store
-//son funciones que devuelve un "Action"
 import fnAxios from "axios"
 
 console.log("load 2: actionCreators.js")

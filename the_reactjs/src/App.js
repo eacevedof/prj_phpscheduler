@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Navbar, Grid, Row, Col } from 'react-bootstrap';
-import ProductList from './components/ProductList';
-import ShoppingCart from './components/ShoppingCart';
-import './App.css';
+import React, { Component } from "react";
+import { Navbar, Grid, Row, Col } from "react-bootstrap";
+import ProductList from "./components/ProductList";
+import ShoppingCart from "./components/ShoppingCart";
+import "./App.css";
 
-console.log("load 5: App.js")
+console.log("APP")
 
 class App extends Component {
     render() {

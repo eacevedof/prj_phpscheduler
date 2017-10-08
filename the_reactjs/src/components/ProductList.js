@@ -1,12 +1,9 @@
-import React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
-//se necesita el store para actualizar el estado a partir de la accion recibida 
-//import oStore from "../store"
-//devuelve la accion a ejecutar
+import React from "react";
+import { Button, Glyphicon } from "react-bootstrap";
 import { fnAcAddToCart, fnAcLoadProducts } from "../actionCreators"
 import { connect } from "react-redux"
 
-console.log("load 3: ProductList.js")
+console.log("PRDUCTLIST")
 
 const oStyles = {
     products: {
@@ -51,7 +48,7 @@ const fnMapStateToProps = (oState)=>{
         arProducts : oState.arProducts
     }
     return oStateNew
-}
+}//fnMapStateToProps
 
 const fnMapDispatchToProps = fnDispatch => {
     console.log("PRODUCTLIST.fnMapDispatchToProps devuelve oDispatch")
@@ -68,6 +65,6 @@ const fnMapDispatchToProps = fnDispatch => {
         }
     }
     return oDispatch
-}
+}//fnMapDispatchToProps
 
 export default connect(fnMapStateToProps,fnMapDispatchToProps)(fnProductList);
