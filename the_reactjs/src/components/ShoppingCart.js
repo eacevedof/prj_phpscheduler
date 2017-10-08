@@ -1,3 +1,4 @@
+//<prj>/the_reactjs/src/components/ShoppingCart.js
 import React from "react";
 import { Panel, Table, Button, Glyphicon } from "react-bootstrap"
 import {AcCart} from "../actions/ac_cart"
@@ -11,8 +12,8 @@ const oStyles = {
     }
 }//oStyles
 
-const get_shoppingcart = ({arCart,fnRemoveFromCart})=>{
-    console.log("SHOPPINGCART.get_shoppingcart")
+const view_shoppingcart = ({arCart,fnRemoveFromCart})=>{
+    console.log("SHOPPINGCART.view_shoppingcart")
     return (
         <Panel header="Shopping Cart">
             <Table fill>
@@ -40,7 +41,7 @@ const get_shoppingcart = ({arCart,fnRemoveFromCart})=>{
         </Panel>
     )//return
     
-}//get_shoppingcart
+}//view_shoppingcart
 
 
 const get_cartlist = oState => {
@@ -63,4 +64,4 @@ const get_dispatchers = fnDispatch => {
     return oDispatch 
 }//get_dispatchers
 
-export default connect(get_cartlist,get_dispatchers)(get_shoppingcart);
+export default connect(get_cartlist,get_dispatchers)(view_shoppingcart);

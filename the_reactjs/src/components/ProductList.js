@@ -1,3 +1,4 @@
+//<prj>/the_reactjs/src/components/ProductList.js
 import React from "react";
 import { Button, Glyphicon } from "react-bootstrap";
 import { AcCart } from "../actions/ac_cart"
@@ -20,10 +21,10 @@ const oStyles = {
 }//oStyles
 
 //get_products,get_dispatchers
-const get_productlist = ({ arProducts, fnAddToCart }) => {
-    console.log("PRODUCTLIST.get_productlist.render()")
-    console.log("PRODUCTLIST.get_productlist: arProducts",arProducts)
-    console.log("PRODUCTLIST.get_productlist: fnAddToCart",fnAddToCart)
+const view_productlist = ({ arProducts, fnAddToCart }) => {
+    console.log("PRODUCTLIST.view_productlist.render()")
+    console.log("PRODUCTLIST.view_productlist: arProducts",arProducts)
+    console.log("PRODUCTLIST.view_productlist: fnAddToCart",fnAddToCart)
     
     return (
         <div style={oStyles.products}>
@@ -42,7 +43,7 @@ const get_productlist = ({ arProducts, fnAddToCart }) => {
             }
         </div>
     )//render
-}//get_productlist
+}//view_productlist
 
 const get_products = (oState)=>{
     console.log("PRODUCTLIST.get_products return oStateNew con arProducts")
@@ -69,4 +70,4 @@ const get_dispatchers = fnDispatch => {
     return oDispatch
 }//get_dispatchers
 
-export default connect(get_products,get_dispatchers)(get_productlist);
+export default connect(get_products,get_dispatchers)(view_productlist);
