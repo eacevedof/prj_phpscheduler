@@ -12,7 +12,7 @@ const view_home = (props) => {
                 <Navbar inverse staticTop>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#">Ecommerce</a>
+                            <a href="/">Ecommerce</a>
                         </Navbar.Brand>
                     </Navbar.Header>
                 </Navbar>

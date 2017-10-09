@@ -7,11 +7,10 @@ import { AcProduct } from "./actions/ac_product"
 import "./index.css";
 
 
-const fnProdDispatch = AcProduct.load()
-oStore.dispatch(fnProdDispatch)
+const get_promise = AcProduct.load()
+oStore.dispatch(get_promise)
 
 ReactDOM.render(
     <Root store={oStore} />,
     document.getElementById("root")
 );
-console.log("end index.js render")
