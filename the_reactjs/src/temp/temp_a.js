@@ -1,6 +1,7 @@
 //=================================================
 //                REDUX-THUNK.JS
 //=================================================
+//<editor-fold defaultstate="collapsed" desc="REDUX-THUNK.JS">
 //C:\xampp\htdocs\prj_reactjs\node_modules\redux-thunk\src\index.js
 function createThunkMiddleware(extraArgument) {
   return ({ dispatch, getState }) => next => action => {
@@ -16,9 +17,11 @@ const thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 export default thunk;
+//</editor-fold>
 //=================================================
 //               REDUX.JS (MIDDLEWARE)
 //=================================================
+//<editor-fold defaultstate="collapsed" desc="REDUX.JS">
 //C:\xampp\htdocs\prj_reactjs\node_modules\redux\src\applyMiddleware.js
 import compose from './compose'
 /**
@@ -56,9 +59,11 @@ export default function applyMiddleware(...middlewares) {
     }
   }
 }
+//</editor-fold>
 //=================================================
 //               REDUX.JS (CREATESTORE)
 //=================================================
+//<editor-fold defaultstate="collapsed" desc="REDUX.JS CREATESTORE">
 //C:\xampp\htdocs\prj_reactjs\node_modules\redux\src\createStore.js
 /**
  * Creates a Redux store that holds the state tree.
@@ -301,9 +306,11 @@ export default function createStore(reducer, preloadedState, enhancer) {
     [$$observable]: observable
   }
 }
+//</editor-fold>
 //=================================================
 //               REDUX.JS (COMBINEREDUCERS)
 //=================================================
+//<editor-fold defaultstate="collapsed" desc="REDUX.JS COMBINEREDUCERS">
 //C:\xampp\htdocs\prj_reactjs\node_modules\redux\src\combineReducers.js
 import { ActionTypes } from './createStore'
 import isPlainObject from 'lodash/isPlainObject'
@@ -465,9 +472,11 @@ export default function combineReducers(reducers) {
     return hasChanged ? nextState : state
   }
 }
+//</editor-fold>
 //=================================================
 //               STORE.JS
 //=================================================
+//<editor-fold defaultstate="collapsed" desc="STORE.JS">
 //C:\xampp\htdocs\prj_reactjs\src\store.js
 //store.js 1.0.2 video 7: https://youtu.be/G_dbuk9B2pQ?list=PLxyfMWnjW2kuyePV1Gzn5W_gr3BGIZq8G&t=40
 //se importa el gestor de estado y acciones "createStore"
@@ -592,9 +601,11 @@ const fnAcLoadProducts = ()=>{
 
 //publico estas dos funciones
 export {fnAcAddToCart, fnAcRemoveFromCart, fnAcLoadProducts}
+//</editor-fold>
 //=================================================
 //               SHOPPINGCART.JS
 //=================================================
+//<editor-fold defaultstate="collapsed" desc="SHOPPINGCART.JS">
 //C:\xampp\htdocs\prj_reactjs\src\components\ShoppingCart.js
 import React from 'react'; //Nos sobra Component al convertir a función la clase
 import { Panel, Table, Button, Glyphicon } from 'react-bootstrap';
@@ -681,9 +692,11 @@ const fnMapDispatchToProps = fnDispatch => {
 //fnRenderShoppingCart({arCart,fnRemoveFromCart})
 //connect crea dos listeners para los cambios de fnRenderShoppingCart.
 export default connect(fnMapStateToProps,fnMapDispatchToProps)(fnRenderShoppingCart);
+//</editor-fold>
 //=================================================
 //               PRODUCTLIST.JS
 //=================================================   
+//<editor-fold defaultstate="collapsed" desc="PRODUCTLIST.JS">
 //C:\xampp\htdocs\prj_reactjs\src\components\ProductList.js
 import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
@@ -758,9 +771,11 @@ const fnMapDispatchToProps = fnDispatch => {
 }
 
 export default connect(fnMapStateToProps,fnMapDispatchToProps)(fnProductList);
+//</editor-fold>
 //=================================================
 //               APP.JS
 //=================================================  
+//<editor-fold defaultstate="collapsed" desc="APP.JS">
 //C:\xampp\htdocs\prj_reactjs\src\App.js
 import React, { Component } from 'react';
 import { Navbar, Grid, Row, Col } from 'react-bootstrap';
@@ -799,9 +814,11 @@ class App extends Component {
 }//App
 
 export default App;
+//</editor-fold>
 //=================================================
 //               INDEX.JS
 //=================================================  
+//<editor-fold defaultstate="collapsed" desc="INDEX.JS">
 //C:\xampp\htdocs\prj_reactjs\src\index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -831,9 +848,11 @@ ReactDOM.render(
     document.getElementById("root")
 );
 console.log("end index.js render")
+//</editor-fold>
 //=================================================
 //               INDEX.HTML
 //================================================= 
+//<editor-fold defaultstate="collapsed" desc="REDUX.JS CREATESTORE">
 //C:\xampp\htdocs\prj_reactjs\public\index.html
 <!doctype html>
 <html lang="en">
@@ -867,3 +886,4 @@ console.log("end index.js render")
     -->
   </body>
 </html>
+//</editor-fold>
