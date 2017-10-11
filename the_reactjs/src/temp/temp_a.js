@@ -3,15 +3,15 @@
 //=================================================
 //<editor-fold defaultstate="collapsed" desc="REDUX-THUNK.JS">
 //C:\xampp\htdocs\prj_reactjs\node_modules\redux-thunk\src\index.js
-function createThunkMiddleware(extraArgument) {
-  return ({ dispatch, getState }) => next => action => {
-    if (typeof action === 'function') {
-      return action(dispatch, getState, extraArgument);
-    }
-
-    return next(action);
-  };
-}
+function createThunkMiddleware(extraArgument) 
+{
+    return ({ fnDispatch, fnGetState }) => fnNext => mxAction => {
+        if(typeof mxAction === 'function')
+            return mxAction(fnDispatch, fnGetState, extraArgument);
+        return fnNext(mxAction);
+    }//fn 
+    
+}//createThunkMiddleware
 
 const thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
@@ -19,9 +19,67 @@ thunk.withExtraArgument = createThunkMiddleware;
 export default thunk;
 //</editor-fold>
 //=================================================
+//                AXIOS.JS
+//=================================================
+//<editor-fold defaultstate="collapsed" desc="AXIOS.JS">
+//C:\xampp\htdocs\prj_phpscheduler\the_reactjs\node_modules\axios\lib\axios.js
+'use strict';
+
+var oUtils = require('./utils');
+var fnBind = require('./helpers/bind');
+var ClassAxios = require('./core/Axios');
+var arDefaults = require('./defaults');
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {ClassAxios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var oContext = new ClassAxios(defaultConfig);
+  var oAxiosInstance = fnBind(ClassAxios.prototype.request, oContext);
+
+  // Copy axios.prototype to instance
+  oUtils.extend(oAxiosInstance, ClassAxios.prototype, oContext);
+
+  // Copy context to instance
+  oUtils.extend(oAxiosInstance, oContext);
+
+  return oAxiosInstance;
+}
+
+// Create the default instance to be exported
+var oAxios = createInstance(arDefaults);
+
+// Expose Axios class to allow class inheritance
+oAxios.Axios = ClassAxios;
+
+// Factory for creating new instances
+oAxios.create = function create(oInstanceConfig) {
+  return createInstance(oUtils.merge(arDefaults, oInstanceConfig));
+};
+
+// Expose Cancel & CancelToken
+oAxios.Cancel = require('./cancel/Cancel');
+oAxios.CancelToken = require('./cancel/CancelToken');
+oAxios.isCancel = require('./cancel/isCancel');
+
+// Expose all/spread
+oAxios.all = function all(arPromises) {
+  return Promise.all(arPromises);
+};
+oAxios.spread = require('./helpers/spread');
+
+module.exports = oAxios;
+
+// Allow use of default import syntax in TypeScript
+module.exports.default = oAxios;
+//</editor-fold>
+//=================================================
 //               REDUX.JS (MIDDLEWARE)
 //=================================================
-//<editor-fold defaultstate="collapsed" desc="REDUX.JS">
+//<editor-fold defaultstate="collapsed" desc="REDUX.JS MIDDLEWARE">
 //C:\xampp\htdocs\prj_reactjs\node_modules\redux\src\applyMiddleware.js
 import compose from './compose'
 /**
@@ -37,28 +95,28 @@ import compose from './compose'
  * Note that each middleware will be given the `dispatch` and `getState` functions
  * as named arguments.
  *
- * @param {...Function} middlewares The middleware chain to be applied.
+ * @param {...Function} fnMiddlewares The middleware chain to be applied.
  * @returns {Function} A store enhancer applying the middleware.
  */
-export default function applyMiddleware(...middlewares) {
-  return (createStore) => (reducer, preloadedState, enhancer) => {
-    const store = createStore(reducer, preloadedState, enhancer)
-    let dispatch = store.dispatch
-    let chain = []
+export default function applyMiddleware(...fnMiddlewares) {
+  return (fnCreateStore) => (fnReducer, oPreloadedState, fnEnhancer) => {
+    const oStore = fnCreateStore(fnReducer, oPreloadedState, fnEnhancer)
+    let fnDispatch = oStore.dispatch
+    let arChain = []
 
-    const middlewareAPI = {
-      getState: store.getState,
-      dispatch: (action) => dispatch(action)
+    const oMiddlewareAPI = {
+      getState: oStore.getState,
+      dispatch: (oAction) => fnDispatch(oAction)
     }
-    chain = middlewares.map(middleware => middleware(middlewareAPI))
-    dispatch = compose(...chain)(store.dispatch)
+    arChain = fnMiddlewares.map(fnMiddleW => fnMiddleW(oMiddlewareAPI))
+    fnDispatch = compose(...arChain)(oStore.dispatch)
 
     return {
-      ...store,
-      dispatch
+      ...oStore,
+      fnDispatch
     }
-  }
-}
+  }//
+}//applyMiddleware
 //</editor-fold>
 //=================================================
 //               REDUX.JS (CREATESTORE)
@@ -73,16 +131,16 @@ export default function applyMiddleware(...middlewares) {
  * parts of the state tree respond to actions, you may combine several reducers
  * into a single reducer function by using `combineReducers`.
  *
- * @param {Function} reducer A function that returns the next state tree, given
+ * @param {Function} fnReducer A function that returns the next state tree, given
  * the current state tree and the action to handle.
  *
- * @param {any} [preloadedState] The initial state. You may optionally specify it
+ * @param {any} [oPreloadedState] The initial state. You may optionally specify it
  * to hydrate the state from the server in universal apps, or to restore a
  * previously serialized user session.
  * If you use `combineReducers` to produce the root reducer function, this must be
  * an object with the same shape as `combineReducers` keys.
  *
- * @param {Function} [enhancer] The store enhancer. You may optionally specify it
+ * @param {Function} [fnEnhancer] The store enhancer. You may optionally specify it
  * to enhance the store with third-party capabilities such as middleware,
  * time travel, persistence, etc. The only store enhancer that ships with Redux
  * is `applyMiddleware()`.
@@ -90,35 +148,36 @@ export default function applyMiddleware(...middlewares) {
  * @returns {Store} A Redux store that lets you read the state, dispatch actions
  * and subscribe to changes.
  */
-export default function createStore(reducer, preloadedState, enhancer) {
-  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
-    enhancer = preloadedState
-    preloadedState = undefined
+export default function createStore(fnReducer, oPreloadedState, fnEnhancer) {
+  if (typeof oPreloadedState === 'function' && typeof fnEnhancer === 'undefined') {
+    fnEnhancer = oPreloadedState
+    oPreloadedState = undefined
   }
 
-  if (typeof enhancer !== 'undefined') {
-    if (typeof enhancer !== 'function') {
+  if (typeof fnEnhancer !== 'undefined') {
+    if (typeof fnEnhancer !== 'function') {
       throw new Error('Expected the enhancer to be a function.')
     }
-
-    return enhancer(createStore)(reducer, preloadedState)
+    
+    //recursividad?
+    return fnEnhancer(createStore)(fnReducer, oPreloadedState)
   }
 
-  if (typeof reducer !== 'function') {
+  if (typeof fnReducer !== 'function') {
     throw new Error('Expected the reducer to be a function.')
   }
 
-  let currentReducer = reducer
-  let currentState = preloadedState
-  let currentListeners = []
-  let nextListeners = currentListeners
+  let fnCurrentReducer = fnReducer
+  let oCurrentState = oPreloadedState
+  let arCurrentListeners = []
+  let arNextListeners = arCurrentListeners
   let isDispatching = false
 
   function ensureCanMutateNextListeners() {
-    if (nextListeners === currentListeners) {
-      nextListeners = currentListeners.slice()
+    if (arNextListeners === arCurrentListeners) {
+      arNextListeners = arCurrentListeners.slice()
     }
-  }
+  }//ensureCanMutateNextListeners
 
   /**
    * Reads the state tree managed by the store.
@@ -126,8 +185,8 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * @returns {any} The current state tree of your application.
    */
   function getState() {
-    return currentState
-  }
+    return oCurrentState
+  }//getState
 
   /**
    * Adds a change listener. It will be called any time an action is dispatched,
@@ -149,20 +208,20 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * registered before the `dispatch()` started will be called with the latest
    * state by the time it exits.
    *
-   * @param {Function} listener A callback to be invoked on every dispatch.
+   * @param {Function} fnListener A callback to be invoked on every dispatch.
    * @returns {Function} A function to remove this change listener.
    */
-  function subscribe(listener) {
-    if (typeof listener !== 'function') {
+  function subscribe(fnListener) {
+    if (typeof fnListener !== 'function') {
       throw new Error('Expected listener to be a function.')
     }
 
     let isSubscribed = true
 
     ensureCanMutateNextListeners()
-    nextListeners.push(listener)
+    arNextListeners.push(fnListener)
 
-    return function unsubscribe() {
+    return function fn_unsubscribe() {
       if (!isSubscribed) {
         return
       }
@@ -170,10 +229,11 @@ export default function createStore(reducer, preloadedState, enhancer) {
       isSubscribed = false
 
       ensureCanMutateNextListeners()
-      const index = nextListeners.indexOf(listener)
-      nextListeners.splice(index, 1)
-    }
-  }
+      const index = arNextListeners.indexOf(fnListener)
+      arNextListeners.splice(index, 1)
+    }//fn_unsubscribe
+    
+  }//subscribe
 
   /**
    * Dispatches an action. It is the only way to trigger a state change.
@@ -189,7 +249,7 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * example, see the documentation for the `redux-thunk` package. Even the
    * middleware will eventually dispatch plain object actions using this method.
    *
-   * @param {Object} action A plain object representing “what changed”. It is
+   * @param {Object} oArgAction A plain object representing “what changed”. It is
    * a good idea to keep actions serializable so you can record and replay user
    * sessions, or use the time travelling `redux-devtools`. An action must have
    * a `type` property which may not be `undefined`. It is a good idea to use
@@ -200,15 +260,15 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * Note that, if you use a custom middleware, it may wrap `dispatch()` to
    * return something else (for example, a Promise you can await).
    */
-  function dispatch(action) {
-    if (!isPlainObject(action)) {
+  function dispatch(oArgAction) {
+    if (!isPlainObject(oArgAction)) {
       throw new Error(
         'Actions must be plain objects. ' +
         'Use custom middleware for async actions.'
       )
     }
 
-    if (typeof action.type === 'undefined') {
+    if (typeof oArgAction.type === 'undefined') {
       throw new Error(
         'Actions may not have an undefined "type" property. ' +
         'Have you misspelled a constant?'
@@ -221,19 +281,19 @@ export default function createStore(reducer, preloadedState, enhancer) {
 
     try {
       isDispatching = true
-      currentState = currentReducer(currentState, action)
+      oCurrentState = fnCurrentReducer(oCurrentState, oArgAction)
     } finally {
       isDispatching = false
     }
 
-    const listeners = currentListeners = nextListeners
-    for (let i = 0; i < listeners.length; i++) {
-      const listener = listeners[i]
+    const arListeners = arCurrentListeners = arNextListeners
+    for (let i = 0; i < arListeners.length; i++) {
+      const listener = arListeners[i]
       listener()
     }
 
-    return action
-  }
+    return oArgAction
+  }//function dispatch
 
   /**
    * Replaces the reducer currently used by the store to calculate the state.
@@ -242,17 +302,18 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * load some of the reducers dynamically. You might also need this if you
    * implement a hot reloading mechanism for Redux.
    *
-   * @param {Function} nextReducer The reducer for the store to use instead.
+   * @param {Function} fnNextReducer The reducer for the store to use instead.
    * @returns {void}
    */
-  function replaceReducer(nextReducer) {
-    if (typeof nextReducer !== 'function') {
+  function replaceReducer(fnNextReducer) {
+    if (typeof fnNextReducer !== 'function') {
       throw new Error('Expected the nextReducer to be a function.')
     }
 
-    currentReducer = nextReducer
+    fnCurrentReducer = fnNextReducer
     dispatch({ type: ActionTypes.INIT })
-  }
+    
+  }//replaceReducer
 
   /**
    * Interoperability point for observable/reactive libraries.
@@ -261,37 +322,38 @@ export default function createStore(reducer, preloadedState, enhancer) {
    * https://github.com/tc39/proposal-observable
    */
   function observable() {
-    const outerSubscribe = subscribe
+    const fnOuterSubscribe = subscribe
     return {
       /**
        * The minimal observable subscription method.
-       * @param {Object} observer Any object that can be used as an observer.
+       * @param {Object} oObserver Any object that can be used as an observer.
        * The observer object should have a `next` method.
        * @returns {subscription} An object with an `unsubscribe` method that can
        * be used to unsubscribe the observable from the store, and prevent further
        * emission of values from the observable.
        */
-      subscribe(observer) {
-        if (typeof observer !== 'object') {
+      subscribe(oObserver) {
+        if (typeof oObserver !== 'object') {
           throw new TypeError('Expected the observer to be an object.')
         }
 
         function observeState() {
-          if (observer.next) {
-            observer.next(getState())
+          if (oObserver.next) {
+            oObserver.next(getState())
           }
-        }
+        }//observeState
 
         observeState()
-        const unsubscribe = outerSubscribe(observeState)
-        return { unsubscribe }
-      },
+        const fnUnsubscribe = fnOuterSubscribe(observeState)
+        return { fnUnsubscribe }
+      },//.subscribe
 
       [$$observable]() {
         return this
-      }
-    }
-  }
+      }//[$$observable]
+      
+    }//return
+  }//function observable
 
   // When a store is created, an "INIT" action is dispatched so that every
   // reducer returns their initial state. This effectively populates
@@ -304,8 +366,9 @@ export default function createStore(reducer, preloadedState, enhancer) {
     getState,
     replaceReducer,
     [$$observable]: observable
-  }
-}
+  }//return
+  
+}//export default function createStore
 //</editor-fold>
 //=================================================
 //               REDUX.JS (COMBINEREDUCERS)
@@ -317,8 +380,8 @@ import isPlainObject from 'lodash/isPlainObject'
 import warning from './utils/warning'
 
 function getUndefinedStateErrorMessage(sKey, oAction) {
-  const actionType = oAction && oAction.type
-  const sActionName = (actionType && `"${actionType.toString()}"`) || 'an action'
+  const sActionType = oAction && oAction.type
+  const sActionName = (sActionType && `"${sActionType.toString()}"`) || 'an action'
 
   return (
     `Given action ${sActionName}, reducer "${sKey}" returned undefined. ` +
@@ -329,7 +392,7 @@ function getUndefinedStateErrorMessage(sKey, oAction) {
 
 function getUnexpectedStateShapeWarningMessage(oState, oReducers, oAction, oUnexpectedKeyCache) {
   const arReducerKeys = Object.keys(oReducers)
-  const argumentName = oAction && oAction.type === ActionTypes.INIT ?
+  const sArgumentName = oAction && oAction.type === ActionTypes.INIT ?
     'preloadedState argument passed to createStore' :
     'previous state received by the reducer'
 
@@ -342,7 +405,7 @@ function getUnexpectedStateShapeWarningMessage(oState, oReducers, oAction, oUnex
 
   if (!isPlainObject(oState)) {
     return (
-      `The ${argumentName} has unexpected type of "` +
+      `The ${sArgumentName} has unexpected type of "` +
       ({}).toString.call(oState).match(/\s([a-z|A-Z]+)/)[1] +
       `". Expected argument to be an object with the following ` +
       `keys: "${arReducerKeys.join('", "')}"`
@@ -361,7 +424,7 @@ function getUnexpectedStateShapeWarningMessage(oState, oReducers, oAction, oUnex
   if (arUnexpectedKeys.length > 0) {
     return (
       `Unexpected ${arUnexpectedKeys.length > 1 ? 'keys' : 'key'} ` +
-      `"${arUnexpectedKeys.join('", "')}" found in ${argumentName}. ` +
+      `"${arUnexpectedKeys.join('", "')}" found in ${sArgumentName}. ` +
       `Expected to find one of the known reducer keys instead: ` +
       `"${arReducerKeys.join('", "')}". Unexpected keys will be ignored.`
     )
