@@ -316,66 +316,66 @@ import { ActionTypes } from './createStore'
 import isPlainObject from 'lodash/isPlainObject'
 import warning from './utils/warning'
 
-function getUndefinedStateErrorMessage(key, action) {
-  const actionType = action && action.type
-  const actionName = (actionType && `"${actionType.toString()}"`) || 'an action'
+function getUndefinedStateErrorMessage(sKey, oAction) {
+  const actionType = oAction && oAction.type
+  const sActionName = (actionType && `"${actionType.toString()}"`) || 'an action'
 
   return (
-    `Given action ${actionName}, reducer "${key}" returned undefined. ` +
+    `Given action ${sActionName}, reducer "${sKey}" returned undefined. ` +
     `To ignore an action, you must explicitly return the previous state. ` +
     `If you want this reducer to hold no value, you can return null instead of undefined.`
   )
-}
+}//getUndefinedStateErrorMessage
 
-function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
-  const reducerKeys = Object.keys(reducers)
-  const argumentName = action && action.type === ActionTypes.INIT ?
+function getUnexpectedStateShapeWarningMessage(oState, oReducers, oAction, oUnexpectedKeyCache) {
+  const arReducerKeys = Object.keys(oReducers)
+  const argumentName = oAction && oAction.type === ActionTypes.INIT ?
     'preloadedState argument passed to createStore' :
     'previous state received by the reducer'
 
-  if (reducerKeys.length === 0) {
+  if (arReducerKeys.length === 0) {
     return (
       'Store does not have a valid reducer. Make sure the argument passed ' +
       'to combineReducers is an object whose values are reducers.'
     )
   }
 
-  if (!isPlainObject(inputState)) {
+  if (!isPlainObject(oState)) {
     return (
       `The ${argumentName} has unexpected type of "` +
-      ({}).toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] +
+      ({}).toString.call(oState).match(/\s([a-z|A-Z]+)/)[1] +
       `". Expected argument to be an object with the following ` +
-      `keys: "${reducerKeys.join('", "')}"`
+      `keys: "${arReducerKeys.join('", "')}"`
     )
   }
 
-  const unexpectedKeys = Object.keys(inputState).filter(key =>
-    !reducers.hasOwnProperty(key) &&
-    !unexpectedKeyCache[key]
+  const arUnexpectedKeys = Object.keys(oState).filter(sKey =>
+    !oReducers.hasOwnProperty(sKey) &&
+    !oUnexpectedKeyCache[sKey]
   )
 
-  unexpectedKeys.forEach(key => {
-    unexpectedKeyCache[key] = true
+  arUnexpectedKeys.forEach(key => {
+    oUnexpectedKeyCache[key] = true
   })
 
-  if (unexpectedKeys.length > 0) {
+  if (arUnexpectedKeys.length > 0) {
     return (
-      `Unexpected ${unexpectedKeys.length > 1 ? 'keys' : 'key'} ` +
-      `"${unexpectedKeys.join('", "')}" found in ${argumentName}. ` +
+      `Unexpected ${arUnexpectedKeys.length > 1 ? 'keys' : 'key'} ` +
+      `"${arUnexpectedKeys.join('", "')}" found in ${argumentName}. ` +
       `Expected to find one of the known reducer keys instead: ` +
-      `"${reducerKeys.join('", "')}". Unexpected keys will be ignored.`
+      `"${arReducerKeys.join('", "')}". Unexpected keys will be ignored.`
     )
   }
-}
+}//getUnexpectedStateShapeWarningMessage
 
-function assertReducerShape(reducers) {
-  Object.keys(reducers).forEach(key => {
-    const reducer = reducers[key]
-    const initialState = reducer(undefined, { type: ActionTypes.INIT })
+function assertReducerShape(oReducers) {
+  Object.keys(oReducers).forEach(sKey => {
+    const fnReduce = oReducers[sKey]
+    const oInitialState = fnReduce(undefined, { type: ActionTypes.INIT })
 
-    if (typeof initialState === 'undefined') {
+    if (typeof oInitialState === 'undefined') {
       throw new Error(
-        `Reducer "${key}" returned undefined during initialization. ` +
+        `Reducer "${sKey}" returned undefined during initialization. ` +
         `If the state passed to the reducer is undefined, you must ` +
         `explicitly return the initial state. The initial state may ` +
         `not be undefined. If you don't want to set a value for this reducer, ` +
@@ -384,9 +384,9 @@ function assertReducerShape(reducers) {
     }
 
     const type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.')
-    if (typeof reducer(undefined, { type }) === 'undefined') {
+    if (typeof fnReduce(undefined, { type }) === 'undefined') {
       throw new Error(
-        `Reducer "${key}" returned undefined when probed with a random type. ` +
+        `Reducer "${sKey}" returned undefined when probed with a random type. ` +
         `Don't try to handle ${ActionTypes.INIT} or other actions in "redux/*" ` +
         `namespace. They are considered private. Instead, you must return the ` +
         `current state for any unknown actions, unless it is undefined, ` +
@@ -394,8 +394,8 @@ function assertReducerShape(reducers) {
         `action type. The initial state may not be undefined, but can be null.`
       )
     }
-  })
-}
+  })//foreach
+}//assertReducerShape
 
 /**
  * Turns an object whose values are different reducer functions, into a single
@@ -413,65 +413,72 @@ function assertReducerShape(reducers) {
  * @returns {Function} A reducer function that invokes every reducer inside the
  * passed object, and builds a state object with the same shape.
  */
-export default function combineReducers(reducers) {
-  const reducerKeys = Object.keys(reducers)
-  const finalReducers = {}
-  for (let i = 0; i < reducerKeys.length; i++) {
-    const key = reducerKeys[i]
+export default function combineReducers(oReducers) {
+  //oReducers: {arCart:fnStoreCart,arProducts:fnStoreProducts}
+  const arReducerKeys = Object.keys(oReducers)
+  const oFinalReducers = {}
+  for (let i = 0; i < arReducerKeys.length; i++) {
+    const sKey = arReducerKeys[i]
 
     if (process.env.NODE_ENV !== 'production') {
-      if (typeof reducers[key] === 'undefined') {
-        warning(`No reducer provided for key "${key}"`)
+      if (typeof oReducers[sKey] === 'undefined') {
+        warning(`No reducer provided for key "${sKey}"`)
       }
     }
 
-    if (typeof reducers[key] === 'function') {
-      finalReducers[key] = reducers[key]
+    if (typeof oReducers[sKey] === 'function') {
+      oFinalReducers[sKey] = oReducers[sKey]
     }
   }
-  const finalReducerKeys = Object.keys(finalReducers)
+  const arFinalReducerKeys = Object.keys(oFinalReducers)
 
-  let unexpectedKeyCache
+  let oUnexpectedKeyCache
   if (process.env.NODE_ENV !== 'production') {
-    unexpectedKeyCache = {}
+    oUnexpectedKeyCache = {}
   }
 
   let shapeAssertionError
   try {
-    assertReducerShape(finalReducers)
+    //comprueba que la funcion reductora devuelva valores correctos  
+    assertReducerShape(oFinalReducers)
   } catch (e) {
     shapeAssertionError = e
   }
 
-  return function combination(state = {}, action) {
+  return function combination(oArgState = {}, oArgAction) {
+      //usa como constantes oFinalReducers,arFinalReducerKeys
+      //si hay un error  detectado por assert
     if (shapeAssertionError) {
       throw shapeAssertionError
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      const warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache)
+      const warningMessage = getUnexpectedStateShapeWarningMessage(oArgState
+                                ,oFinalReducers,oArgAction,oUnexpectedKeyCache)
       if (warningMessage) {
         warning(warningMessage)
       }
     }
 
-    let hasChanged = false
-    const nextState = {}
-    for (let i = 0; i < finalReducerKeys.length; i++) {
-      const key = finalReducerKeys[i]
-      const reducer = finalReducers[key]
-      const previousStateForKey = state[key]
-      const nextStateForKey = reducer(previousStateForKey, action)
-      if (typeof nextStateForKey === 'undefined') {
-        const errorMessage = getUndefinedStateErrorMessage(key, action)
+    let hasStateChanged = false
+    const oNextState = {}
+    for (let i = 0; i < arFinalReducerKeys.length; i++) {
+      const sKey = arFinalReducerKeys[i]
+      const fnReducer = oFinalReducers[sKey]
+      //recupera el estado actual (el que se le pasa)
+      const oPreviousStateForKey = oArgState[sKey]
+      //se calcula el nuevo estadon llamando al reducer
+      const oNextStateForKey = fnReducer(oPreviousStateForKey, oArgAction)
+      if (typeof oNextStateForKey === 'undefined') {
+        const errorMessage = getUndefinedStateErrorMessage(sKey, oArgAction)
         throw new Error(errorMessage)
       }
-      nextState[key] = nextStateForKey
-      hasChanged = hasChanged || nextStateForKey !== previousStateForKey
-    }
-    return hasChanged ? nextState : state
-  }
-}
+      oNextState[sKey] = oNextStateForKey
+      hasStateChanged = hasStateChanged || oNextStateForKey !== oPreviousStateForKey
+    }//for(arFinalReducers)
+    return hasStateChanged ? oNextState : oArgState
+  }//combination
+}//function combineReducers
 //</editor-fold>
 //=================================================
 //               STORE.JS
@@ -534,7 +541,10 @@ const fnLogger = oStore => fnNext => oAction => {
 
 //exporta un objeto oStore. La función reductora estara a la escucha de los cambios de estado para actualizarlos.
 //se inicializa con un estado inicial vacio arCart:[]
-//export default createStore(fnStoreReducer, { arCart:[], arProducts:[] }, applyMiddleware(fnLogger));
+//fnCombined es una funcion que recibe un array de variables de estado y sus funciones
+//para ser jecutadas una a una en el momento que es llamda. Recibe como parametros el estado actual
+//y la accion. Devuelve un booleano indicando si ha cambiado el estado, comprobando el estado actual y el 
+//producido por la llamada a cada funcion reductora
 const fnCombined = combineReducers({arCart:fnStoreCart,arProducts:fnStoreProducts})
 console.log("STORE.fnCombined",fnCombined)
 
