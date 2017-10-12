@@ -9,15 +9,17 @@ Button.onClick() : =>
                         
 
 
-PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnAddToCart
+PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnAddToCart.fnDispatch ƒ (oAction) {
+//console.log("fnLogger.oStore: ",oStore," | fnLogger.fnNext: ",fnNext," | fnLogger.oAction: ",oAction)
+console.log("STORE.fnLogger dispatching oAction: ", oAction…
+ProductList.js:68 PRODUCTLIST.fnMapDispatchToProps.oDispatch.fnAddToCart
 actionCreators.js:11 ACTIONCREATORS.fnAcAddToCart return oAction+oProduct
 store.js:47 STORE.fnLogger dispatching oAction:  {type: "ADD_TO_CART", product: {…}}
 store.js:48 STORE.fnLogger fnNext:  ƒ (action) {
-if (typeof action === 'function') {
-return action(dispatch, getState, extraArgument);
-}
-
-return next(action);
+    if (typeof action === 'function') {
+        return action(dispatch, getState, extraArgument);
+    }
+    return next(action);
 }
 store.js:31 STORE.fnStoreCart.oAction.type ADD_TO_CART
 store.js:32 STORE.fnStoreCart.arState []
