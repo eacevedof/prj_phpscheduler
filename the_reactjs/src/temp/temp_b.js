@@ -1,6 +1,6 @@
 Button.onClick() => 
     oDispatch.fnAddtoCart(oProduct) =>
-        fnAddtoCart(oProduct) => 
+        fnAcAddtoCart(oProduct) => 
             fnDispatch(oAction) =>
                 fnLogger(oStore,fnNext,oAction) =>
                     fnStoreCart(arState,oAction) =>
