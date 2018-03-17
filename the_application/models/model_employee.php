@@ -30,4 +30,20 @@ class ModelEmployee extends TheApplicationModel
         asort($arData);
         return $arData;
     }
+    
+    public function get_by_workplace($sPlace="")
+    {
+        $arEmployees = array_filter($this->arData,function($arEmployee) use($sPlace) {
+            $arEmployee["workplace"] = (isset($arEmployee["workplace"])?$arEmployee["workplace"]:"");
+            return (strstr($arEmployee["workplace"],$sPlace));
+        });
+        
+        $arEmployees = array_map(function($arEmployee){
+           return $arEmployee["id"]; 
+        },$arEmployees);
+        
+        asort($arEmployees);
+        return $arEmployees;
+    }
+    
 }//ModelEmployee

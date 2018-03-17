@@ -3,7 +3,7 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name ComponentTopdf
- * @file component_topdf.php 1.0.0
+ * @file component_topdf.php 1.1.0
  * @date 01-06-2014 12:45
  * @observations
  */
@@ -28,8 +28,11 @@ class ComponentTopdf
         $this->arHead["employees"]["full"] = $arData["employees"];
         $this->arHead["employees"]["names"] = $arTmp;
         $this->arHead["hours"] = $arData["hours"];
+        $this->arHead["salon"] = $arData["salon"];
+        //bug($this->arHead,"arHead");die;
+        //arData son los dias => horas => empleados
         $this->arData = $arData["data"];
-        //pr($this->arData);die;
+        //pr($this->arData,"arData");die;
         $this->iEnd = (int)substr($arData["end"],6);
         //pr($this->iEnd);die;
         //bugif();
@@ -99,15 +102,19 @@ class ComponentTopdf
         }//for(idays)
         
         $iYHours = $oPdf->GetY();//20
+        
         //columna empleados
         //$arSalon = ["dayana","milenka","omayra"];
-        $arSalon = ["Dayana","Milenka","Omayra"];
+        $arSalon = $this->arHead["salon"];
         for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
         {
             $sEmpName = $this->arHead["employees"]["names"][$i];
+            $sEmpKey = array_search($sEmpName,$this->arHead["employees"]["full"]);
+            //bug("name:$sEmpName,key:$sEmpKey");die;
             $oPdf->SetY($oPdf->GetY());
             $oPdf->SetFillColor(255,255,255);
-            if(in_array($sEmpName,$arSalon)) $oPdf->SetFillColor(255,204,255);
+            //color rosa para salon
+            if(in_array($sEmpKey,$arSalon)) $oPdf->SetFillColor(255,204,255);
             $oPdf->MultiCell(25,$iH,$sEmpName,1,"L",1);
         }//for Nombres
         

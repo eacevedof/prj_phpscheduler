@@ -19,7 +19,7 @@ class HelperSelect extends TheFrameworkHelper
     
     public function __construct
     ($arOptions, $id="", $name="", HelperLabel $oLabel=null, $mxValueToSelect ="", $size=1
-     , $isMultiple=FALSE, $arExtras="", $class="", $isReadOnly=FALSE)
+     , $isMultiple=FALSE, $arExtras=array(), $class="", $isReadOnly=FALSE)
     {
         $this->_type = "select";
         $this->mxValuesToSelect = $mxValueToSelect;

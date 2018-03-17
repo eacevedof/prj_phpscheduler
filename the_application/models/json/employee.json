@@ -1,10 +1,14 @@
 [           
     {"id":"rosanna","name":"Rosanna","workplace":"cocina"},
-    {"id":"jesus","name":"Jesus","workplace":"cocina,salon"},
+    {"id":"maria","name":"Maria","workplace":"cocina,salon"},
     {"id":"caty","name":"Caty","workplace":"cocina"},
     {"id":"joel","name":"Joel","workplace":"cocina"},
-    {"id":"jose","name":"Jose","workplace":"cocina"},
-    {"id":"milenka","name":"Milenka","workplace":"salon"},
-    {"id":"dayana","name":"Dayana","workplace":"barra"},
-    {"id":"omayra","name":"Omayra","workplace":"salon"}
+    {"id":"olga","name":"Olga","workplace":"cocina"},
+    {"id":"rossi","name":"Rossi","workplace":"salon"},
+    
+    {"id":"dayana","name":"Dayana","workplace":"barra,salon"},
+    {"id":"omayra","name":"Omayra","workplace":"salon"},
+    {"id":"maraly","name":"Maraly","workplace":"salon"},
+    {"id":"cecilia","name":"Cecilia","workplace":"salon"},
+    {"id":"vanesa","name":"Vanesa","workplace":"salon"}
 ]

@@ -25,8 +25,10 @@ class ComponentScheduler
     private $iStart;
     private $iEnd;
     private $arEmployees;
+    private $arSalon;
     private $arHours;
     private $arData;
+    
     
     public function __construct() 
     {
@@ -36,7 +38,9 @@ class ComponentScheduler
         $oEmployee = new ModelEmployee();
         $oEmployee->load();
         $this->arEmployees = $oEmployee->get_keyname();
-
+        //los que pertenecen a salon van en rosa
+        $this->arSalon = $oEmployee->get_by_workplace("salon");
+        //bug($this->arSalon,"arSalon");die;
         $this->arHours = [""=>"...hour","1000"=>"10:00","1030"=>"10:30","1130"=>"11:30",
             "1200"=>"12:00","1230"=>"12:30","1300"=>"13:00","off"=>"OFF"];
         $this->json_load();
@@ -257,7 +261,10 @@ class ComponentScheduler
             if($iDay==(isset($_POST["hidDay"])?$_POST["hidDay"]:NULL))
                 $oSelHour->add_extras("autofocus","autofocus");
             if($iEmp%4==0) $sHtml.="<tr>";
-            $sHtml .= "<td>$sEmpl</td><td>{$oSelHour->get_html()}</td>";
+            
+            $sClass = "";
+            if(in_array($kEmpl,$this->arSalon)) $sClass="background-color:#ffccff";
+            $sHtml .= "<td style=\"$sClass\">$sEmpl</td><td style=\"$sClass\">{$oSelHour->get_html()}</td>";
             if($iEmp%4==(4-1)) $sHtml.="</tr>";
             $iEmp++;
         }
@@ -349,9 +356,9 @@ class ComponentScheduler
             $arData["data"] = $this->arData[$sMonth];
             $arData["end"] = $this->iEnd;
             $arData["employees"] = $this->arEmployees;
+            $arData["salon"] = $this->arSalon;
             $arData["hours"] = $this->arHours;
             
-            //pr($arData,"arData");
             $oToPdf = new ComponentTopdf($arData);
             $oToPdf->run();
             exit();

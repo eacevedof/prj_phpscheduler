@@ -20,12 +20,13 @@ class TheApplicationModel extends TheFrameworkModel
     
     public function __construct()
     {
-
+        ;
     }
 
     public function load()
     {
         $this->arData = $this->json_read($this->sPath);
+        //bug($this->arData);die;
     }
     
     public function update($arDataNew=[])

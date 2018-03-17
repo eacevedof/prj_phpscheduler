@@ -1,6 +1,7 @@
 <?php
 
 ?>
+<!--homes.view_index 1.0.0-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,9 +26,11 @@ include("elem_analytics.php");
     <div class="row">
         <div class="col-lg-12">
             <br/>
+            <!--oCompSched.run()-->
 <?php
 $oCompSched->run();
 ?>
+            <!--/oCompSched.run()-->
         </div>
     </div>
     <p class="text-center">
@@ -64,3 +67,4 @@ $oCompSched->run();
 </footer>
 </body>
 </html>
+<!--/homes.view_index-->

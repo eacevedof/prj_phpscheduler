@@ -32,6 +32,7 @@ class ControllerHomes extends TheApplicationController
     public function index()
     {
         $oCompSched = new ComponentScheduler();
+        //bug($oCompSched);die;
         include("views/homes/view_index.php");
     }
 }//ControllerHomes
