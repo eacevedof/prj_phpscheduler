@@ -3,7 +3,7 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name TheApplication\Components\ComponentScheduler 
- * @file component_scheduler.php 1.1.0
+ * @file component_scheduler.php 1.2.0
  * @date 19-09-2017 04:56 SPAIN
  * @observations
  */
@@ -203,9 +203,10 @@ class ComponentScheduler
         $oSelYear->set_value_to_select($this->arMonth["y"]);
         
         $arOptions = [""=>"...month",$sMonth=>$sMonth];
-        $sMonth = (int)date("m");
+//        $sMonth = (int)date("m");
+//        if($sMonth>2) $sMonth = $sMonth-2;
         //pr($sMonth);die;
-        for($i=$sMonth; $i<13; $i++)
+        for($i=1; $i<13; $i++)
         {
             $sOpt = sprintf("%02d",$i);
             $arOptions[$sOpt] = $sOpt;
