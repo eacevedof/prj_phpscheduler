@@ -1,10 +1,10 @@
 [           
     {"id":"rosanna","name":"Rosanna","workplace":"cocina"},
-    {"id":"maria","name":"Maria","workplace":"cocina,salon"},
+    {"id":"maria","name":"Maria","workplace":"cocina"},
     {"id":"caty","name":"Caty","workplace":"cocina"},
     {"id":"joel","name":"Joel","workplace":"cocina"},
     {"id":"olga","name":"Olga","workplace":"cocina"},
-    {"id":"rossi","name":"Rossi","workplace":"salon"},
+    {"id":"rossi","name":"Rossi","workplace":"cocina"},
     
     {"id":"dayana","name":"Dayana","workplace":"barra,salon"},
     {"id":"omayra","name":"Omayra","workplace":"salon"},

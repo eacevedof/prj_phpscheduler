@@ -3,7 +3,7 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name TheApplication\Components\ComponentScheduler 
- * @file component_scheduler.php 1.0.3
+ * @file component_scheduler.php 1.1.0
  * @date 19-09-2017 04:56 SPAIN
  * @observations
  */
@@ -22,8 +22,8 @@ use TheApplication\Models\ModelEmployee;
 class ComponentScheduler 
 {
     private $arMonth;
-    private $iStart;
-    private $iEnd;
+    private $iDayStart;
+    private $iDayEnd;
     private $arEmployees;
     private $arSalon;
     private $arHours;
@@ -37,14 +37,43 @@ class ComponentScheduler
         
         $oEmployee = new ModelEmployee();
         $oEmployee->load();
+        //array: empkey=>empname
         $this->arEmployees = $oEmployee->get_keyname();
         //los que pertenecen a salon van en rosa
         $this->arSalon = $oEmployee->get_by_workplace("salon");
+        $this->fix_arrange_by_place();
         //bug($this->arSalon,"arSalon");die;
         $this->arHours = [""=>"...hour","1000"=>"10:00","1030"=>"10:30","1130"=>"11:30",
-            "1200"=>"12:00","1230"=>"12:30","1300"=>"13:00","off"=>"OFF"];
+            "1200"=>"12:00","1230"=>"12:30","1300"=>"13:00","1330"=>"13:30",
+            "1400"=>"14:00","1500"=>"15:00","off"=>"OFF"];
         $this->json_load();
     }
+    
+    private function fix_arrange_by_place()
+    {
+        $arSalonKeys = $this->arSalon;
+        $arFull = $this->arEmployees;
+        
+        $arIn = [];
+        $arNot = [];
+        
+        $arIn = array_filter($arFull,function($sEmpKey) use ($arSalonKeys){
+            return (in_array($sEmpKey,$arSalonKeys));
+        },ARRAY_FILTER_USE_KEY);
+        
+        $arNot = array_filter($arFull,function($sEmpKey) use ($arSalonKeys){
+            return (!in_array($sEmpKey,$arSalonKeys));
+        },ARRAY_FILTER_USE_KEY);
+               
+        foreach($arNot as $sEmpKey=>$sV)
+            $arFullNew[$sEmpKey] = $arFull[$sEmpKey];
+               
+        foreach($arIn as $sEmpKey=>$sV)
+            $arFullNew[$sEmpKey] = $arFull[$sEmpKey];
+        
+        $this->arEmployees = $arFullNew;
+        
+    }//fix_arrange_by_place    
     
     private function json_load()
     {
@@ -159,10 +188,10 @@ class ComponentScheduler
             $sYear = $arDay["y"]; $sMonth = $arDay["m"];
         }
         
-        $this->iStart = $sYear.$sMonth."01";
-        $this->iStart = (int) $this->iStart;
-        $this->iEnd = date("Ymt",strtotime($this->iStart));
-        $this->iEnd = (int) $this->iEnd;
+        $this->iDayStart = $sYear.$sMonth."01";
+        $this->iDayStart = (int) $this->iDayStart;
+        $this->iDayEnd = date("Ymt",strtotime($this->iDayStart));
+        $this->iDayEnd = (int) $this->iDayEnd;
         //$this->iEnd = $this->get_ardate($this->iEnd);
         //$this->iEnd = $this->iEnd["d"];
         //pr($this->iEnd);
@@ -306,7 +335,7 @@ class ComponentScheduler
         //comprueba post para ver si hay algo q guardar. Lo guarda y recarga
         $this->json_save();
         //bug($this->arJson,"json loaded");
-        $iColRows = 2;
+        //$iColRows = 2;
         
         $sDatePicker = $this->get_datepick();
         $sHtml = "<table class=\"table table-responsive table-hover\">";
@@ -315,13 +344,13 @@ class ComponentScheduler
         $sHtml .= "<tr><th>{$this->arMonth["name"]}</th><th></th></tr>";
         //$iCol = 0;
         
-        for($i=$this->iStart; $i<=$this->iEnd; $i++)
+        for($iFullDay=$this->iDayStart; $iFullDay<=$this->iDayEnd; $iFullDay++)
         {
             //$isStartCol = ($iCol%$iColRows)==0;
             //if($isStartCol)
                 $sHtml .= "<tr>";
             //devuelve la celda con el form
-            $sHtmlTD = $this->get_td($i);
+            $sHtmlTD = $this->get_td($iFullDay);
             
             $sHtml .= "<td>";
             $sHtml .= $sHtmlTD;
@@ -349,12 +378,12 @@ class ComponentScheduler
         {
             $sMonth = $this->get_post("hidPdf");
             $arMonth = $this->get_ardate($sMonth);
-            $this->iEnd = date("Ymt",strtotime($this->iStart));
-            $this->iEnd = (int) $this->iEnd;
+            $this->iDayEnd = date("Ymt",strtotime($this->iDayStart));
+            $this->iDayEnd = (int) $this->iDayEnd;
             $arData["month"]["asked"] = $sMonth;
             $arData["month"]["letters"] = date("F",mktime(0,0,0,$arMonth["m"],"01",$arMonth["y"]))." {$arMonth["y"]}";
             $arData["data"] = $this->arData[$sMonth];
-            $arData["end"] = $this->iEnd;
+            $arData["end"] = $this->iDayEnd;
             $arData["employees"] = $this->arEmployees;
             $arData["salon"] = $this->arSalon;
             $arData["hours"] = $this->arHours;

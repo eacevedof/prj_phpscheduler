@@ -3,7 +3,7 @@
  * @author Eduardo Acevedo Farje.
  * @link www.eduardoaf.com
  * @name ComponentTopdf
- * @file component_topdf.php 1.1.0
+ * @file component_topdf.php 1.2.0
  * @date 01-06-2014 12:45
  * @observations
  */
@@ -16,7 +16,7 @@ class ComponentTopdf
 {
     private $arHead;
     private $arData; //array con datos
-    private $iEnd; //end day
+    private $iDayEnd; //end day
     
     public function __construct($arData)
     {
@@ -28,15 +28,51 @@ class ComponentTopdf
         $this->arHead["employees"]["full"] = $arData["employees"];
         $this->arHead["employees"]["names"] = $arTmp;
         $this->arHead["hours"] = $arData["hours"];
-        $this->arHead["salon"] = $arData["salon"];
+        $this->arHead["employees"]["salon"] = $arData["salon"];
         //bug($this->arHead,"arHead");die;
         //arData son los dias => horas => empleados
         $this->arData = $arData["data"];
         //pr($this->arData,"arData");die;
-        $this->iEnd = (int)substr($arData["end"],6);
+        $this->iDayEnd = (int)substr($arData["end"],6);
+        
+        $this->fix_arrange_by_place();
         //pr($this->iEnd);die;
         //bugif();
     }
+    
+    private function fix_arrange_by_place()
+    {
+        $arSalonKeys = $this->arHead["employees"]["salon"];
+        $arFull = $this->arHead["employees"]["full"];
+        //$arNames = $this->arHead["employees"]["names"];
+        
+        $arFullNew = [];
+        
+        $arIn = [];
+        $arNot = [];
+        
+        $arIn = array_filter($arFull,function($sEmpKey) use ($arSalonKeys){
+            return (in_array($sEmpKey,$arSalonKeys));
+        },ARRAY_FILTER_USE_KEY);
+        
+        $arNot = array_filter($arFull,function($sEmpKey) use ($arSalonKeys){
+            return (!in_array($sEmpKey,$arSalonKeys));
+        },ARRAY_FILTER_USE_KEY);
+               
+        foreach($arNot as $sEmpKey=>$sV)
+            $arFullNew[$sEmpKey] = $arFull[$sEmpKey];
+               
+        foreach($arIn as $sEmpKey=>$sV)
+            $arFullNew[$sEmpKey] = $arFull[$sEmpKey];
+        
+        $arNamesNew = array_values($arFullNew);
+        
+        //bug($arIn,"in");bug($arNot,"not");
+        //bug($arNamesNew,"arNamesNew"); bug($arFullNew,"arFullNew");
+
+        $this->arHead["employees"]["full"] = $arFullNew;
+        $this->arHead["employees"]["names"] = $arNamesNew;
+    }//fix_arrange_by_place
     
     private function get_hour($sKeyEmp,$sDay)
     {
@@ -79,10 +115,10 @@ class ComponentTopdf
         $oPdf->Cell(30,$iH,"EL CHALAN - Horas de entrada personal del mes: ".strtoupper($this->arHead["month"]["letters"]));
         //días
         $oPdf->SetX(0);
-        for($i=0; $i<=$this->iEnd; $i++)
+        for($iDay=0; $iDay<=$this->iDayEnd; $iDay++)
         {
             $oPdf->SetY(20);
-            if($i==0)
+            if($iDay==0)
             {
                 $oPdf->SetX(0.5);
                 $oPdf->MultiCell(25,$iH,"Dia /\nRRHH",1);
@@ -90,7 +126,7 @@ class ComponentTopdf
             }
             else
             {
-                $sDay = sprintf("%02d",$i);
+                $sDay = sprintf("%02d",$iDay);
                 $sDayFull = $this->arHead["month"]["asked"].$sDay;
                 $sDayChar = $this->get_day($sDayFull);
                 $oPdf->SetX($iX);
@@ -104,11 +140,10 @@ class ComponentTopdf
         $iYHours = $oPdf->GetY();//20
         
         //columna empleados
-        //$arSalon = ["dayana","milenka","omayra"];
-        $arSalon = $this->arHead["salon"];
-        for($i=0;$i<count($this->arHead["employees"]["names"]); $i++)
+        $arSalon = $this->arHead["employees"]["salon"];
+        for($iEmp=0;$iEmp<count($this->arHead["employees"]["names"]); $iEmp++)
         {
-            $sEmpName = $this->arHead["employees"]["names"][$i];
+            $sEmpName = $this->arHead["employees"]["names"][$iEmp];
             $sEmpKey = array_search($sEmpName,$this->arHead["employees"]["full"]);
             //bug("name:$sEmpName,key:$sEmpKey");die;
             $oPdf->SetY($oPdf->GetY());
@@ -121,10 +156,10 @@ class ComponentTopdf
         $oPdf->SetFont("Arial","",7.5);
         $iX = 25.5;
         //dias
-        for($i=1; $i<=$this->iEnd; $i++)
+        for($iDay=1; $iDay<=$this->iDayEnd; $iDay++)
         {            
             $oPdf->SetY($iYHours);
-            $sDay = sprintf("%02d",$i);
+            $sDay = sprintf("%02d",$iDay);
             //empleados
             $arEmp = $this->arHead["employees"]["full"];
             //asort($arEmp);
